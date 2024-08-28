@@ -1,0 +1,20 @@
+[package]
+name = "remote-desk-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = [
+  "fs",
+  "rt",
+  "macros",
+  "time",
+  "rt-multi-thread",
+] }
+anyhow = "1"
+dep-inj = "0.1"
+dep-inj-target = "0.1"
+derive_more = { version = "1.0", features = ["as_ref"] }
+
+[profile.dev]
+debug = 0
