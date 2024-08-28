@@ -18,3 +18,8 @@ derive_more = { version = "1.0", features = ["as_ref"] }
 
 [profile.dev]
 debug = 0
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
