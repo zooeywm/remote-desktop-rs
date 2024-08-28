@@ -1,0 +1,5 @@
+[formatting]
+column_width        = 200
+align_entries       = true
+array_auto_collapse = false
+trailing_newline    = false

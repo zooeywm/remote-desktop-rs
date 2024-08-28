@@ -1,3 +1,3 @@
 pub trait Bar {
-    fn bar(&self);
+	fn bar(&self);
 }

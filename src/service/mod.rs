@@ -1,7 +1,5 @@
 mod bar;
 mod foo;
 
-pub use {
-    bar::BarImpl,
-    foo::{FooImpl, FooState},
-};
+pub use bar::BarImpl;
+pub use foo::{FooImpl, FooState};

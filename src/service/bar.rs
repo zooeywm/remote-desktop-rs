@@ -5,10 +5,10 @@ pub struct BarImpl;
 
 impl<Deps> BarImpl<Deps>
 where
-    Deps: Foo,
+	Deps: Foo,
 {
-    pub fn bar(&self) {
-        // Or (self.prj_ref() as &dyn Foo).foo()
-        self.prj_ref().foo()
-    }
+	pub fn bar(&self) {
+		// Or (self.prj_ref() as &dyn Foo).foo()
+		self.prj_ref().foo()
+	}
 }
