@@ -1,0 +1,48 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        # os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt update
+          sudo apt install clang libavcodec-dev libavformat-dev libavutil-dev libavfilter-dev libavdevice-dev libasound2-dev pkg-config
+      - name: Install macOS dependencies
+        if: runner.os == 'macOS'
+        run: |
+          brew install pkg-config ffmpeg
+      - name: Install Windows dependencies
+        if: runner.os == 'Windows'
+        run: |
+          vcpkg install ffmpeg --triplet x64-windows
+          $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
+          $env:PATH += ";${{ env.VCPKG_ROOT }}\installed\x64-windows\bin"
+
+      - name: Setup Rust toolchain
+        run: |
+          rustup toolchain install stable --profile minimal
+
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        run: cargo build --verbose
+
+      - name: Test
+        run: cargo test --all --verbose
