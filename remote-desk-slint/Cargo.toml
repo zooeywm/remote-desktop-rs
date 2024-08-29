@@ -1,0 +1,7 @@
+[package]
+name    = "remote-desk-slint"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+remote-desk-infra = { workspace = true }

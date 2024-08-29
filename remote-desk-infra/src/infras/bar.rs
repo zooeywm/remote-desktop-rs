@@ -1,11 +1,11 @@
-use crate::domain::Foo;
+use remote_desk_core::service::FooService;
 
 #[dep_inj_target::dep_inj_target]
-pub struct BarImpl;
+pub struct BarServiceImpl;
 
-impl<Deps> BarImpl<Deps>
+impl<Deps> BarServiceImpl<Deps>
 where
-	Deps: Foo,
+	Deps: FooService,
 {
 	pub fn bar(&self) {
 		// Or (self.prj_ref() as &dyn Foo).foo()

@@ -1,26 +1,26 @@
-[package]
-name = "remote-desk-rs"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-tokio = { version = "1", features = [
-  "fs",
-  "rt",
-  "macros",
-  "time",
-  "rt-multi-thread",
-] }
-anyhow = "1"
-dep-inj = "0.1"
-dep-inj-target = "0.1"
-derive_more = { version = "1.0", features = ["as_ref"] }
-webrtc = "0.11"
+[workspace]
+resolver        = "2"
+members         = ["remote-desk*"]
+default-members = ["remote-desk-slint", "remote-desk-flutter"]
 
 [profile.dev]
 debug = 0
 
 [profile.release]
-lto = true
 codegen-units = 1
-panic = "abort"
+lto           = true
+panic         = "abort"
+strip         = true
+
+[workspace.dependencies]
+anyhow     = "1.0"
+serde      = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio      = { version = "1.39", features = ["fs", "macros", "rt-multi-thread", "time"] }
+
+remote-desk-config  = { path = "remote-desk-config" }
+remote-desk-core    = { path = "remote-desk-core" }
+remote-desk-infra   = { path = "remote-desk-infra" }
+remote-desk-tools   = { path = "remote-desk-tools" }
+remote-desk-flutter = { path = "remote-desk-flutter" }
+remote-desk-slint   = { path = "remote-desk-slint" }

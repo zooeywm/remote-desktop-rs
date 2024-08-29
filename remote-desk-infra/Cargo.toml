@@ -1,0 +1,16 @@
+[package]
+name    = "remote-desk-infra"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+remote-desk-core   = { workspace = true }
+remote-desk-tools  = { workspace = true }
+remote-desk-config = { workspace = true }
+
+tokio          = { workspace = true }
+anyhow         = { workspace = true }
+derive_more    = { version = "1.0", features = ["as_ref"] }
+webrtc         = "0.11"
+dep-inj        = "0.1"
+dep-inj-target = "0.1"
