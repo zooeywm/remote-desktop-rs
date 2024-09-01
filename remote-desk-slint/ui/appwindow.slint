@@ -1,0 +1,16 @@
+import { VerticalBox, Palette } from "std-widgets.slint";
+
+export component App inherits Window {
+    in property <image> video-frame <=> image.source;
+
+    preferred-width: 500px;
+    preferred-height: 300px;
+    min-width: 500px;
+    min-height: 300px;
+    title: "Video player";
+    background: #000000;
+
+    VerticalBox {
+        image := Image { }
+    }
+}

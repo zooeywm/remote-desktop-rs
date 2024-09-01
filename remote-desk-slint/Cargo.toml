@@ -8,4 +8,10 @@ description = "remote-desk slint GUI"
 repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
+tokio             = { workspace = true }
 remote-desk-infra = { workspace = true }
+
+slint = "1.7"
+
+[build-dependencies]
+slint-build = "1.7"

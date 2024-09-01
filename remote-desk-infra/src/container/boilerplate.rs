@@ -1,11 +1,12 @@
-use remote_desk_core::service::{BarService, FooService};
+use anyhow::Result;
+use remote_desk_core::{model::StreamSource, service::StreamDecoder};
 
-use crate::{container::Container, infras::{BarServiceImpl, FooServiceImpl}};
+use crate::{container::Container, implements::FFmpegWithRodioStreamDecoder};
 
-impl FooService for Container {
-	fn foo(&self) { FooServiceImpl::inj_ref(self).foo() }
-}
+impl StreamDecoder for Container {
+	fn init(&self) -> Result<()> { FFmpegWithRodioStreamDecoder::inj_ref(self).init() }
 
-impl BarService for Container {
-	fn bar(&self) { BarServiceImpl::inj_ref(self).bar() }
+	fn handle_stream(&self, source: StreamSource) -> Result<()> {
+		FFmpegWithRodioStreamDecoder::inj_ref(self).handle_stream(source)
+	}
 }

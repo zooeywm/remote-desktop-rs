@@ -8,5 +8,7 @@ description = "remote-desk domain core"
 repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
-tokio  = { workspace = true }
-anyhow = { workspace = true }
+tokio         = { workspace = true }
+anyhow        = { workspace = true }
+thiserror     = "1.0"
+trait-variant = { workspace = true }

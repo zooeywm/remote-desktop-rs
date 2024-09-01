@@ -1,5 +1,3 @@
-mod bar;
-mod foo;
+mod stream_decoder;
 
-pub use bar::BarService;
-pub use foo::FooService;
+pub use stream_decoder::StreamDecoder;
