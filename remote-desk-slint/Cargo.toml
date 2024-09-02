@@ -9,7 +9,7 @@ repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
 tokio             = { workspace = true }
-remote-desk-infra = { workspace = true }
+remote-desk-kernel = { workspace = true }
 
 slint = "1.7"
 

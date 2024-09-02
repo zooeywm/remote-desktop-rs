@@ -1,0 +1,23 @@
+[package]
+name        = "remote-desk-kernel"
+version     = "0.1.0"
+edition     = "2021"
+license     = "GPL"
+authors     = ["zooeywm <zooeywm@gmail.com>"]
+description = "remote-desk app"
+repository  = "https://github.com/zooeywm/remote-desktop-rs"
+
+[dependencies]
+remote-desk-core    = { workspace = true }
+remote-desk-tools   = { workspace = true }
+remote-desk-config  = { workspace = true }
+remote-desk-decoder = { workspace = true }
+remote-desk-webrtc  = { workspace = true }
+
+tokio       = { workspace = true }
+anyhow      = { workspace = true }
+derive_more = { version = "1.0", features = ["as_ref"] }
+
+[features]
+default     = []
+server_only = []

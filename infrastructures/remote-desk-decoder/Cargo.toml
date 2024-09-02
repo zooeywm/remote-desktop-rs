@@ -1,10 +1,10 @@
 [package]
-name        = "remote-desk-infra"
+name        = "remote-desk-decoder"
 version     = "0.1.0"
 edition     = "2021"
 license     = "GPL"
 authors     = ["zooeywm <zooeywm@gmail.com>"]
-description = "remote-desk infrastructure"
+description = "remote-desk decoder"
 repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
@@ -12,16 +12,8 @@ remote-desk-core   = { workspace = true }
 remote-desk-tools  = { workspace = true }
 remote-desk-config = { workspace = true }
 
-tokio          = { workspace = true }
+tokio          = { workspace = true, features = ["fs", "macros", "rt-multi-thread", "time"] }
 anyhow         = { workspace = true }
-derive_more    = { version = "1.0", features = ["as_ref"] }
-dep-inj        = "0.1"
-dep-inj-target = "0.1"
-webrtc         = "0.11"
+dep-inj        = { workspace = true }
+dep-inj-target = { workspace = true }
 ffmpeg-next    = "7.0"
-rodio          = "0.19"
-flume          = "0.11"
-
-[features]
-default     = []
-server_only = []

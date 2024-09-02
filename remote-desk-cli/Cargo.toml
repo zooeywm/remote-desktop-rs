@@ -8,4 +8,4 @@ description  = "remote-desk command line inerface"
 repository   = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
-remote-desk-infra = { workspace = true }
+remote-desk-kernel = { workspace = true }

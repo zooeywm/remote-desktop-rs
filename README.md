@@ -4,7 +4,9 @@ Aiming to develop a remote desk control application supports for Windows/Linux(X
 
 ## architecture
 
-![remote-desk-architecture](assets/remote-desk-architecture.jpg)
+Note: Split infrastructures into crates to decrease build time.
+
+![remote-desk-architecture](assets/remote-desk-architecture.png)
 
 ## remote-desk-config
 
@@ -18,9 +20,13 @@ DDD Domains of remote-desk, include models, repositories, and domain services
 
 Cross-platform support and utilities
 
-## remote-desk-infra
+## remote-desk-infrastructures/*
 
-Implementation of specific technical facilities
+Implementation of technical facilities
+
+## remote-desk-kernel
+
+App kernel
 
 ## rust-desk-cli
 

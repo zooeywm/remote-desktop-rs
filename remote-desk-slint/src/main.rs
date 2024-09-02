@@ -1,11 +1,13 @@
 use std::path::PathBuf;
 
-use remote_desk_infra::{AppConfig, Container, FFmpegVideoFrame, StreamSource};
+use remote_desk_kernel::{model::StreamSource, AppConfig, Container, VideoFrame};
 
 slint::include_modules!();
 
 #[tokio::main]
 async fn main() {
+	let args: Vec<String> = std::env::args().collect();
+	let video_path = args.get(1).expect("Please provide a video file path");
 	let app = App::new().unwrap();
 	let container = Container::new(&AppConfig::new(1), {
 		let app_weak = app.as_weak();
@@ -18,15 +20,13 @@ async fn main() {
 			Ok(())
 		}
 	});
-	container
-		.start_decode(StreamSource::File { path: PathBuf::from("/home/zooeywm/Videos/example.mp4") })
-		.unwrap();
+	container.start_decode(StreamSource::File { path: PathBuf::from(video_path) }).unwrap();
 
 	app.run().unwrap();
 }
 
 pub fn video_frame_to_pixel_buffer(
-	frame: &FFmpegVideoFrame,
+	frame: &(impl VideoFrame + ?Sized),
 ) -> slint::SharedPixelBuffer<slint::Rgb8Pixel> {
 	let mut pixel_buffer =
 		slint::SharedPixelBuffer::<slint::Rgb8Pixel>::new(frame.width(), frame.height());
