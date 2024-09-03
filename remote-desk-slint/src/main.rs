@@ -1,5 +1,6 @@
 use std::path::PathBuf;
 
+use i_slint_backend_winit::{WinitWindowAccessor, WinitWindowEventResult};
 use remote_desk_kernel::{model::StreamSource, AppConfig, Container, VideoFrame};
 
 slint::include_modules!();
@@ -7,8 +8,16 @@ slint::include_modules!();
 #[tokio::main]
 async fn main() {
 	let args: Vec<String> = std::env::args().collect();
+	slint::platform::set_platform(Box::new(i_slint_backend_winit::Backend::new().unwrap())).unwrap();
 	let video_path = args.get(1).expect("Please provide a video file path");
 	let app = App::new().unwrap();
+	let window = app.window();
+
+	window.on_winit_window_event(move |_window, event| {
+		println!("{event:?}");
+		WinitWindowEventResult::Propagate
+	});
+
 	let container = Container::new(&AppConfig::new(1), {
 		let app_weak = app.as_weak();
 
