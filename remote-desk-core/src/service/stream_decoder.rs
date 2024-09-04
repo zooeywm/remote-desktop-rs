@@ -1,16 +1,15 @@
-use anyhow::Result;
-
-use crate::model::StreamSource;
+use crate::{error::Result, model::{StreamSource, VideoFrame}};
 
 /// Use for decode stream
 /// TODO: Split render logic from it
 pub trait StreamDecoder {
-	/// Init the StreamDecoder
-	fn init(&self) -> Result<()>;
-
 	/// Decode frame synchronously, render asynchronously, display synchronously.
 	/// decode --> render
 	/// render -> display
 	/// Thus need a async channel to synchronize from render to display
-	fn handle_stream(&self, source: StreamSource) -> Result<()>;
+	fn decode_stream(
+		&self,
+		source: StreamSource,
+		on_video_frame: impl Fn(&dyn VideoFrame) -> Result<()> + Send + 'static,
+	) -> Result<()>;
 }

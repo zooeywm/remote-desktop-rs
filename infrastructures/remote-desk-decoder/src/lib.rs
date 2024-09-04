@@ -1,35 +1,37 @@
 mod stream_decoder;
 
-type OnVideoFrame = dyn Fn(&dyn VideoFrame) -> anyhow::Result<()> + Send;
-type FFmpegVideoFrame = ffmpeg_next::frame::Video;
 type CodecContext = ffmpeg_next::codec::Context;
 type VideoDecoder = ffmpeg_next::decoder::Video;
 type ScalingContext = ffmpeg_next::software::scaling::Context;
 type FFmpegError = ffmpeg_next::Error;
 
-pub use stream_decoder::{FFmpegWithRodioStreamDecoder, FFmpegWithRodioStreamDecoderState};
+use std::ops::{Deref, DerefMut};
 
-/// Video Frame, because all of its fields are Send, it is Send
-pub trait VideoFrame: Send {
-	/// Frame width
-	fn width(&self) -> u32;
+use remote_desk_core::model::VideoFrame;
+pub use stream_decoder::FFmpegWithRodioStreamDecoder;
 
-	/// Frame height
-	fn height(&self) -> u32;
+struct FFmpegVideoFrame(ffmpeg_next::frame::Video);
 
-	/// Frame data of index
-	fn data(&self, index: usize) -> &[u8];
+impl FFmpegVideoFrame {
+	fn empty() -> Self { Self(ffmpeg_next::frame::Video::empty()) }
+}
 
-	/// Frame stride of index
-	fn stride(&self, index: usize) -> usize;
+impl Deref for FFmpegVideoFrame {
+	type Target = ffmpeg_next::frame::Video;
+
+	fn deref(&self) -> &Self::Target { &self.0 }
+}
+
+impl DerefMut for FFmpegVideoFrame {
+	fn deref_mut(&mut self) -> &mut Self::Target { &mut self.0 }
 }
 
 impl VideoFrame for FFmpegVideoFrame {
-	fn width(&self) -> u32 { self.width() }
+	fn width(&self) -> u32 { self.0.width() }
 
-	fn height(&self) -> u32 { self.height() }
+	fn height(&self) -> u32 { self.0.height() }
 
-	fn data(&self, index: usize) -> &[u8] { self.data(index) }
+	fn data(&self, index: usize) -> &[u8] { self.0.data(index) }
 
-	fn stride(&self, index: usize) -> usize { self.stride(index) }
+	fn stride(&self, index: usize) -> usize { self.0.stride(index) }
 }

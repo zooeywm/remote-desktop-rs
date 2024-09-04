@@ -12,8 +12,7 @@ remote-desk-core   = { workspace = true }
 remote-desk-tools  = { workspace = true }
 remote-desk-config = { workspace = true }
 
-tokio          = { workspace = true, features = ["fs", "macros", "rt-multi-thread", "time"] }
-anyhow         = { workspace = true }
+tokio          = { workspace = true, features = ["fs", "macros", "rt-multi-thread", "time", "sync"] }
 dep-inj        = { workspace = true }
 dep-inj-target = { workspace = true }
 ffmpeg-next    = "7.0"

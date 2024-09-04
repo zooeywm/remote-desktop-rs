@@ -8,12 +8,13 @@ debug = 0
 
 [profile.release]
 codegen-units = 1
-lto           = true
 panic         = "abort"
-strip         = true
+
+[profile.product]
+inherits = "release"
+lto      = "fat"
 
 [workspace.dependencies]
-anyhow         = "1.0"
 serde          = { version = "1.0", features = ["derive"] }
 serde_json     = "1.0"
 tokio          = "1.39"
@@ -22,7 +23,7 @@ dep-inj-target = "0.1"
 
 remote-desk-config  = { path = "remote-desk-config" }
 remote-desk-core    = { path = "remote-desk-core" }
-remote-desk-kernel     = { path = "remote-desk-kernel" }
+remote-desk-kernel  = { path = "remote-desk-kernel" }
 remote-desk-tools   = { path = "remote-desk-tools" }
 remote-desk-flutter = { path = "remote-desk-flutter" }
 remote-desk-slint   = { path = "remote-desk-slint" }

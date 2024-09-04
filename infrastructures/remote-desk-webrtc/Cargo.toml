@@ -13,7 +13,6 @@ remote-desk-tools  = { workspace = true }
 remote-desk-config = { workspace = true }
 
 tokio          = { workspace = true }
-anyhow         = { workspace = true }
 dep-inj        = { workspace = true }
 dep-inj-target = { workspace = true }
 webrtc         = "0.11"

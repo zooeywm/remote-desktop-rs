@@ -15,7 +15,6 @@ remote-desk-decoder = { workspace = true }
 remote-desk-webrtc  = { workspace = true }
 
 tokio       = { workspace = true }
-anyhow      = { workspace = true }
 derive_more = { version = "1.0", features = ["as_ref"] }
 
 [features]

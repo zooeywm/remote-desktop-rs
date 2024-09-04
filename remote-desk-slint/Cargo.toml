@@ -15,6 +15,8 @@ remote-desk-kernel = { workspace = true }
 # i-slint-backend-winit does not adhere to semver and may introduce breaking changes in any patch release.
 i-slint-backend-winit = "1.7.2"
 slint                 = { version = "1.7.2", default-features = false, features = ["backend-winit", "accessibility", "compat-1-2", "renderer-skia", "std"] }
+log                   = "0.4.22"
+env_logger            = "0.11.5"
 
 [build-dependencies]
 slint-build = "1.7"
