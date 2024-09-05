@@ -1,33 +1,35 @@
-use std::{io::Write, path::PathBuf, sync::atomic::AtomicU32, time::Instant};
+mod config;
 
+use std::{path::PathBuf, sync::atomic::AtomicU32, time::Instant};
+
+use config::SlintConfig;
 use i_slint_backend_winit::{WinitWindowAccessor, WinitWindowEventResult};
-use remote_desk_kernel::{model::{StreamSource, VideoFrame}, AppConfig, Container};
+use remote_desk_kernel::{config::build_config, model::{StreamSource, VideoFrame}, telemetry::init_telemetry, Container, Result};
 
 slint::include_modules!();
 
-#[tokio::main]
-async fn main() {
-	env_logger::Builder::new()
-		.format(|buf, record| writeln!(buf, "{} - {}", record.level(), record.args()))
-		.filter(Some("remote_desk_slint"), log::LevelFilter::Info)
-		.init();
-
+#[tokio::main(worker_threads = 32)]
+async fn main() -> Result<()> {
+	let config = build_config()?;
+	let slint_config: SlintConfig = config.try_deserialize()?;
 	std::panic::set_hook(Box::new(|panic_info| {
-		log::error!("panic occurred: {panic_info}");
+		tracing::error!("panic occurred: {panic_info}");
 	}));
+	let common_config = &slint_config.common;
 
-	let args: Vec<String> = std::env::args().collect();
-	slint::platform::set_platform(Box::new(i_slint_backend_winit::Backend::new().unwrap())).unwrap();
-	let video_path = args.get(1).expect("Please provide a video file path");
-	let app = App::new().unwrap();
+	init_telemetry(&common_config.telemetry)?;
+
+	slint::platform::set_platform(Box::new(i_slint_backend_winit::Backend::new()?))?;
+	let video_path = &common_config.video_path;
+	let app = App::new()?;
 	let window = app.window();
 
 	window.on_winit_window_event(move |_window, event| {
-		log::debug!("{event:?}");
+		tracing::debug!("{event:?}");
 		WinitWindowEventResult::Propagate
 	});
 
-	let container = Container::new(&AppConfig::new(1));
+	let mut container = Container::new(&slint_config.common);
 
 	let result = container.start_decode(StreamSource::File { path: PathBuf::from(video_path) }, {
 		let app_weak = app.as_weak();
@@ -37,24 +39,24 @@ async fn main() {
 		move |frame| {
 			let pixel_buffer = video_frame_to_pixel_buffer(frame);
 			let count = count.clone();
-			app_weak
-				.upgrade_in_event_loop(move |app| {
-					count.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-
-					app.set_video_frame(slint::Image::from_rgb8(pixel_buffer));
-					let count = count.load(std::sync::atomic::Ordering::Relaxed);
-					log::info!("{}:{}", count, inst.elapsed().as_millis());
-				})
-				.unwrap();
+			if let Err(err) = app_weak.upgrade_in_event_loop(move |app| {
+				count.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+				app.set_video_frame(slint::Image::from_rgb8(pixel_buffer));
+				let count = count.load(std::sync::atomic::Ordering::Relaxed);
+				tracing::debug!("{}:{}", count, inst.elapsed().as_millis());
+			}) {
+				tracing::error!("{err}")
+			}
 			Ok(())
 		}
 	});
 
 	if let Err(err) = result {
-		log::error!("{err}");
+		tracing::error!("{err}");
 	};
 
-	app.run().unwrap();
+	app.run()?;
+	Ok(())
 }
 
 pub fn video_frame_to_pixel_buffer(

@@ -1,3 +1,3 @@
-mod stream_decoder;
+mod transcoder;
 
-pub use stream_decoder::StreamDecoder;
+pub use transcoder::Transcoder;

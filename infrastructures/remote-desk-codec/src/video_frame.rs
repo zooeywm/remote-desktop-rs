@@ -1,20 +1,8 @@
-mod stream_decoder;
-
-type CodecContext = ffmpeg_next::codec::Context;
-type VideoDecoder = ffmpeg_next::decoder::Video;
-type ScalingContext = ffmpeg_next::software::scaling::Context;
-type FFmpegError = ffmpeg_next::Error;
-
 use std::ops::{Deref, DerefMut};
 
 use remote_desk_core::model::VideoFrame;
-pub use stream_decoder::FFmpegWithRodioStreamDecoder;
 
-struct FFmpegVideoFrame(ffmpeg_next::frame::Video);
-
-impl FFmpegVideoFrame {
-	fn empty() -> Self { Self(ffmpeg_next::frame::Video::empty()) }
-}
+pub struct FFmpegVideoFrame(pub(crate) ffmpeg_next::frame::Video);
 
 impl Deref for FFmpegVideoFrame {
 	type Target = ffmpeg_next::frame::Video;

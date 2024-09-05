@@ -4,19 +4,34 @@ version     = "0.1.0"
 edition     = "2021"
 license     = "GPL"
 authors     = ["zooeywm <zooeywm@gmail.com>"]
-description = "remote-desk app"
+description = "remote-desk kernel"
 repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
-remote-desk-core    = { workspace = true }
-remote-desk-tools   = { workspace = true }
-remote-desk-config  = { workspace = true }
-remote-desk-decoder = { workspace = true }
-remote-desk-webrtc  = { workspace = true }
+remote-desk-core   = { workspace = true }
+remote-desk-tools  = { workspace = true }
+remote-desk-codec  = { workspace = true }
+remote-desk-webrtc = { workspace = true }
 
-tokio       = { workspace = true }
-derive_more = { version = "1.0", features = ["as_ref"] }
+tokio                 = { workspace = true }
+serde                 = { workspace = true, features = ["derive"] }
+config                = "0.14"
+derive_more           = { version = "1.0", features = ["as_ref"] }
+tracing-appender      = { version = "0.2", optional = true }
+tracing-opentelemetry = { version = "0.25", optional = true }
+tracing-subscriber    = { version = "0.3", features = ["env-filter"], optional = true }
+opentelemetry         = { version = "0.24", optional = true }
+opentelemetry-otlp    = { version = "0.17", optional = true }
+opentelemetry_sdk     = { version = "0.24", features = ["rt-tokio"], optional = true }
 
 [features]
-default     = []
+default = []
+telemetry = [
+  "dep:tracing-opentelemetry",
+  "dep:tracing-subscriber",
+  "dep:opentelemetry",
+  "dep:opentelemetry-otlp",
+  "dep:opentelemetry_sdk",
+  "dep:tracing-appender",
+]
 server_only = []

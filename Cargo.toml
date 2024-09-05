@@ -15,17 +15,17 @@ inherits = "release"
 lto      = "fat"
 
 [workspace.dependencies]
-serde          = { version = "1.0", features = ["derive"] }
+serde          = "1.0"
 serde_json     = "1.0"
 tokio          = "1.39"
 dep-inj        = "0.1"
 dep-inj-target = "0.1"
+tracing        = "0.1"
 
-remote-desk-config  = { path = "remote-desk-config" }
 remote-desk-core    = { path = "remote-desk-core" }
 remote-desk-kernel  = { path = "remote-desk-kernel" }
 remote-desk-tools   = { path = "remote-desk-tools" }
 remote-desk-flutter = { path = "remote-desk-flutter" }
 remote-desk-slint   = { path = "remote-desk-slint" }
-remote-desk-decoder = { path = "infrastructures/remote-desk-decoder" }
+remote-desk-codec   = { path = "infrastructures/remote-desk-codec" }
 remote-desk-webrtc  = { path = "infrastructures/remote-desk-webrtc" }

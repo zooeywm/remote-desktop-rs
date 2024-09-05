@@ -1,10 +1,17 @@
 mod boilerplate;
 
-use remote_desk_config::AppConfig;
+use remote_desk_codec::FFmpegCodecState;
 
-#[derive(derive_more::AsRef)]
-pub struct Container {}
+use crate::config::CommonConfig;
+
+#[derive(derive_more::AsMut)]
+pub struct Container {
+	#[as_mut]
+	transcoder_manager: FFmpegCodecState,
+}
 
 impl Container {
-	pub fn new(_config: &AppConfig) -> Self { Self {} }
+	pub fn new(_config: &CommonConfig) -> Self {
+		Self { transcoder_manager: FFmpegCodecState::new() }
+	}
 }
