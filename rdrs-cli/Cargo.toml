@@ -1,0 +1,11 @@
+[package]
+name         = "rdrs-cli"
+version      = "0.1.0"
+edition      = "2021"
+license      = "GPL"
+authors      = ["zooeywm <zooeywm@gmail.com>"]
+description  = "remote-desk command line inerface"
+repository   = "https://github.com/zooeywm/remote-desktop-rs"
+
+[dependencies]
+rdrs-kernel = { workspace = true }

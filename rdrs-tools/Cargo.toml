@@ -1,0 +1,11 @@
+[package]
+name        = "rdrs-tools"
+version     = "0.1.0"
+edition     = "2021"
+license     = "GPL"
+authors     = ["zooeywm <zooeywm@gmail.com>"]
+description = "remote-desk platform tools and utilities"
+repository  = "https://github.com/zooeywm/remote-desktop-rs"
+
+[dependencies]
+tokio  = { workspace = true }

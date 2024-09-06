@@ -1,7 +1,7 @@
 [workspace]
 resolver        = "2"
-members         = ["remote-desk*", "infrastructures/*"]
-default-members = ["remote-desk-slint", "remote-desk-flutter"]
+members         = ["rdrs-*", "infrastructures/*"]
+default-members = ["rdrs-slint", "rdrs-flutter"]
 
 [profile.dev]
 debug = 0
@@ -23,10 +23,10 @@ dep-inj-target = "0.1"
 tracing        = "0.1"
 config         = "0.14"
 
-remote-desk-core    = { path = "remote-desk-core" }
-remote-desk-kernel  = { path = "remote-desk-kernel" }
-remote-desk-tools   = { path = "remote-desk-tools" }
-remote-desk-flutter = { path = "remote-desk-flutter" }
-remote-desk-slint   = { path = "remote-desk-slint" }
-remote-desk-codec   = { path = "infrastructures/remote-desk-codec" }
-remote-desk-webrtc  = { path = "infrastructures/remote-desk-webrtc" }
+rdrs-core    = { path = "rdrs-core" }
+rdrs-kernel  = { path = "rdrs-kernel" }
+rdrs-tools   = { path = "rdrs-tools" }
+rdrs-flutter = { path = "rdrs-flutter" }
+rdrs-slint   = { path = "rdrs-slint" }
+rdrs-codec   = { path = "infrastructures/rdrs-codec" }
+rdrs-webrtc  = { path = "infrastructures/rdrs-webrtc" }

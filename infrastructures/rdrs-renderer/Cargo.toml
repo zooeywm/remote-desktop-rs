@@ -1,0 +1,17 @@
+[package]
+name        = "rdrs-renderer"
+version     = "0.1.0"
+edition     = "2021"
+license     = "GPL"
+authors     = ["zooeywm <zooeywm@gmail.com>"]
+description = "remote-desk renderer"
+repository  = "https://github.com/zooeywm/remote-desktop-rs"
+
+[dependencies]
+rdrs-core   = { workspace = true }
+rdrs-tools  = { workspace = true }
+
+tokio          = { workspace = true, features = ["fs", "macros", "rt-multi-thread", "time", "sync"] }
+dep-inj        = { workspace = true }
+dep-inj-target = { workspace = true }
+ffmpeg-next    = "7.0"

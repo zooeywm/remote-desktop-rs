@@ -1,4 +1,4 @@
-# remote-desk-rs(WIP)
+# rdrs-rs(WIP)
 
 ## Introduce
 
@@ -12,7 +12,7 @@ I will continue to update this document, including architecture diagrams
 
 ## Configuration mechanism
 
-One can configuration this program by a workdir file: `config.toml` or toml files provided by `arguments`, or environment variables with prefix `RDRS` and spliter `__`, For more information, please see [reference code](remote-desk-kernel/src/config.rs)
+One can configuration this program by a workdir file: `config.toml` or toml files provided by `arguments`, or environment variables with prefix `RDRS` and spliter `__`, For more information, please see [reference code](rdrs-kernel/src/config.rs)
 
 ## Roadmap
 
@@ -31,37 +31,37 @@ One can configuration this program by a workdir file: `config.toml` or toml file
 - [ ] other device features include virtual camera, virtual microphone, usb redirect, disk share, etc
 - [ ] metircs
 
-here are [examples](remote-desk-slint/examples/).
+here are [examples](rdrs-slint/examples/).
 
 ## architecture
 
 Note: Split infrastructures into crates to decrease build time.
 
-![remote-desk-architecture](assets/remote-desk-architecture.png)
+![rdrs-architecture](assets/rdrs-architecture.png)
 
-## remote-desk-config
+## rdrs-config
 
 Configurations of remote-desk
 
-## remote-desk-core
+## rdrs-core
 
 DDD Domains of remote-desk, include models, repositories, and domain services
 
-## remote-desk-tools
+## rdrs-tools
 
 Cross-platform support and utilities
 
-## remote-desk-infrastructures/*
+## rdrs-infrastructures/*
 
 Implementation of technical facilities
 
-## remote-desk-kernel
+## rdrs-kernel
 
 App kernel
 
 ## rust-desk-cli
 
-Deploy a machine as remote-desk server without GUI, can be connected by remote-desk-flutter and remote-desk-slint
+Deploy a machine as remote-desk server without GUI, can be connected by rdrs-flutter and rdrs-slint
 
 ## rust-desk-slint
 

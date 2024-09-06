@@ -4210,6 +4210,108 @@ dependencies = [
 ]
 
 [[package]]
+name = "rdrs-cli"
+version = "0.1.0"
+dependencies = [
+ "rdrs-kernel",
+]
+
+[[package]]
+name = "rdrs-codec"
+version = "0.1.0"
+dependencies = [
+ "dep-inj",
+ "dep-inj-target",
+ "ffmpeg-next",
+ "rdrs-core",
+ "rdrs-tools",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "rdrs-core"
+version = "0.1.0"
+dependencies = [
+ "tokio",
+]
+
+[[package]]
+name = "rdrs-flutter"
+version = "0.1.0"
+dependencies = [
+ "rdrs-kernel",
+]
+
+[[package]]
+name = "rdrs-kernel"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "config",
+ "derive_more 1.0.0",
+ "opentelemetry",
+ "opentelemetry-otlp",
+ "opentelemetry_sdk",
+ "rdrs-codec",
+ "rdrs-core",
+ "rdrs-tools",
+ "rdrs-webrtc",
+ "serde",
+ "time",
+ "tokio",
+ "tracing",
+ "tracing-appender",
+ "tracing-opentelemetry",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "rdrs-renderer"
+version = "0.1.0"
+dependencies = [
+ "dep-inj",
+ "dep-inj-target",
+ "ffmpeg-next",
+ "rdrs-core",
+ "rdrs-tools",
+ "tokio",
+]
+
+[[package]]
+name = "rdrs-slint"
+version = "0.1.0"
+dependencies = [
+ "config",
+ "i-slint-backend-winit",
+ "rdrs-kernel",
+ "serde",
+ "slint",
+ "slint-build",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "rdrs-tools"
+version = "0.1.0"
+dependencies = [
+ "tokio",
+]
+
+[[package]]
+name = "rdrs-webrtc"
+version = "0.1.0"
+dependencies = [
+ "dep-inj",
+ "dep-inj-target",
+ "rdrs-core",
+ "rdrs-tools",
+ "tokio",
+ "webrtc",
+]
+
+[[package]]
 name = "redox_syscall"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4270,108 +4372,6 @@ name = "regex-syntax"
 version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a66a03ae7c801facd77a29370b4faec201768915ac14a721ba36f20bc9c209b"
-
-[[package]]
-name = "remote-desk-cli"
-version = "0.1.0"
-dependencies = [
- "remote-desk-kernel",
-]
-
-[[package]]
-name = "remote-desk-codec"
-version = "0.1.0"
-dependencies = [
- "dep-inj",
- "dep-inj-target",
- "ffmpeg-next",
- "remote-desk-core",
- "remote-desk-tools",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "remote-desk-core"
-version = "0.1.0"
-dependencies = [
- "tokio",
-]
-
-[[package]]
-name = "remote-desk-flutter"
-version = "0.1.0"
-dependencies = [
- "remote-desk-kernel",
-]
-
-[[package]]
-name = "remote-desk-kernel"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "config",
- "derive_more 1.0.0",
- "opentelemetry",
- "opentelemetry-otlp",
- "opentelemetry_sdk",
- "remote-desk-codec",
- "remote-desk-core",
- "remote-desk-tools",
- "remote-desk-webrtc",
- "serde",
- "time",
- "tokio",
- "tracing",
- "tracing-appender",
- "tracing-opentelemetry",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "remote-desk-renderer"
-version = "0.1.0"
-dependencies = [
- "dep-inj",
- "dep-inj-target",
- "ffmpeg-next",
- "remote-desk-core",
- "remote-desk-tools",
- "tokio",
-]
-
-[[package]]
-name = "remote-desk-slint"
-version = "0.1.0"
-dependencies = [
- "config",
- "i-slint-backend-winit",
- "remote-desk-kernel",
- "serde",
- "slint",
- "slint-build",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "remote-desk-tools"
-version = "0.1.0"
-dependencies = [
- "tokio",
-]
-
-[[package]]
-name = "remote-desk-webrtc"
-version = "0.1.0"
-dependencies = [
- "dep-inj",
- "dep-inj-target",
- "remote-desk-core",
- "remote-desk-tools",
- "tokio",
- "webrtc",
-]
 
 [[package]]
 name = "resvg"

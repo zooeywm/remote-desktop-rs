@@ -1,0 +1,17 @@
+[package]
+name        = "rdrs-webrtc"
+version     = "0.1.0"
+edition     = "2021"
+license     = "GPL"
+authors     = ["zooeywm <zooeywm@gmail.com>"]
+description = "remote-desk webrtc"
+repository  = "https://github.com/zooeywm/remote-desktop-rs"
+
+[dependencies]
+rdrs-core   = { workspace = true }
+rdrs-tools  = { workspace = true }
+
+tokio          = { workspace = true }
+dep-inj        = { workspace = true }
+dep-inj-target = { workspace = true }
+webrtc         = "0.11"
