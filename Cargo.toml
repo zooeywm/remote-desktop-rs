@@ -21,6 +21,7 @@ tokio          = "1.39"
 dep-inj        = "0.1"
 dep-inj-target = "0.1"
 tracing        = "0.1"
+config         = "0.14"
 
 remote-desk-core    = { path = "remote-desk-core" }
 remote-desk-kernel  = { path = "remote-desk-kernel" }

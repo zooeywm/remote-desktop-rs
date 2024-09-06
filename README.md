@@ -1,6 +1,37 @@
 # remote-desk-rs(WIP)
 
+## Introduce
+
 Aiming to develop a remote desk control application supports for Windows/Linux(X11/Wayland)/macOS/Android/iOS, as well as a server with no GUI(or a TUI)
+
+## Note
+
+This project is currently in a developing stage, I will give priority to optimizing the architecture. When implementing functions, I will first write them in the form of tests or examples. Finally, if all modules are OK, then assemble them.
+
+I will continue to update this document, including architecture diagrams
+
+## Configuration mechanism
+
+One can configuration this program by a workdir file: `config.toml` or toml files provided by `arguments`, or environment variables with prefix `RDRS` and spliter `__`, For more information, please see [reference code](remote-desk-kernel/src/config.rs)
+
+## Roadmap
+
+- [ ] developing slint using `ffmpeg`, `slint` and `webrtc`, aming to realize a simple straming from peer to peer first.
+    - Continuously improve the architecture, including major refactoring if necessary
+    - [x] video decode
+        - [x] decode video from encoded format to original color data
+    - [ ] video encode
+        - [ ] encode video from original color data to encoded format
+    - [x] video play
+        - [x] play with slint native interface
+        - [ ] play with a opengl underlay
+        - [ ] Stabilize this feature
+    - [ ] audio play
+    - [ ] webrtc connection, video and audio track, and mouse, keyboard datachannel
+- [ ] other device features include virtual camera, virtual microphone, usb redirect, disk share, etc
+- [ ] metircs
+
+here are [examples](remote-desk-slint/examples/).
 
 ## architecture
 

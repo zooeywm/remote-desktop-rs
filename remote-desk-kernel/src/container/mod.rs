@@ -1,17 +1,24 @@
 mod boilerplate;
 
 use remote_desk_codec::FFmpegCodecState;
+use remote_desk_core::error::Result;
 
-use crate::config::CommonConfig;
+use crate::{config::CommonConfig, telemetry::init_telemetry};
 
 #[derive(derive_more::AsMut)]
 pub struct Container {
 	#[as_mut]
-	transcoder_manager: FFmpegCodecState,
+	pub(crate) transcoder_manager: FFmpegCodecState,
+	pub extends:                   Option<config::Value>,
 }
 
 impl Container {
-	pub fn new(_config: &CommonConfig) -> Self {
-		Self { transcoder_manager: FFmpegCodecState::new() }
+	pub fn initialize(CommonConfig { telemetry, extends, .. }: CommonConfig) -> Result<Self> {
+		init_telemetry(&telemetry)?;
+		std::panic::set_hook(Box::new(|panic_info| {
+			tracing::error!("panic: {panic_info}");
+		}));
+
+		Ok(Self { transcoder_manager: FFmpegCodecState::new(), extends })
 	}
 }

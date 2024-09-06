@@ -4,5 +4,5 @@ use serde::Deserialize;
 #[derive(Debug, Deserialize)]
 pub struct SlintConfig {
 	#[serde(default, flatten)]
-	pub common:     CommonConfig,
+	pub common: CommonConfig,
 }

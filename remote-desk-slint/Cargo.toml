@@ -21,3 +21,6 @@ slint                 = { version = "1.7.2", default-features = false, features 
 
 [build-dependencies]
 slint-build = "1.7"
+
+[dev-dependencies]
+config = { workspace = true }

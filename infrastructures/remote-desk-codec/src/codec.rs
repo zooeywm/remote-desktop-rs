@@ -25,6 +25,7 @@ where
 		on_video_frame: impl Fn(&dyn VideoFrame) -> Result<()> + Send + 'static,
 	) -> Result<()> {
 		ffmpeg_next::init()?;
+		tracing::info!("{source:#?}");
 		let mut input_context = match source {
 			StreamSource::File { path } => input(&path)?,
 			_ => todo!(),

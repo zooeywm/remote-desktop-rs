@@ -4322,6 +4322,7 @@ dependencies = [
  "serde",
  "time",
  "tokio",
+ "tracing",
  "tracing-appender",
  "tracing-opentelemetry",
  "tracing-subscriber",
@@ -4343,6 +4344,7 @@ dependencies = [
 name = "remote-desk-slint"
 version = "0.1.0"
 dependencies = [
+ "config",
  "i-slint-backend-winit",
  "remote-desk-kernel",
  "serde",

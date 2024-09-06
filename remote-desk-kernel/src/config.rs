@@ -20,15 +20,22 @@ pub fn build_config() -> Result<Config> {
 			.separator("__")
 			.try_parsing(true)
 			.list_separator(";")
-			// .with_list_parse_key("common.urls"),
+			.with_list_parse_key("common.extends_array"),
 	);
 	Ok(config.build()?)
 }
 
+/// All dependences in `Container` initialized with the same one config, with
+/// `extends` field for test or something else
 #[derive(Debug, Default, Deserialize)]
 pub struct CommonConfig {
 	#[cfg(feature = "telemetry")]
 	#[serde(default)]
-	pub telemetry: crate::telemetry::TelemetryConfig,
-	pub video_path: String,
+	pub telemetry:     crate::telemetry::TelemetryConfig,
+	/// Extend fields
+	#[serde(default)]
+	pub extends:       Option<config::Value>,
+	/// Extend Sstring array
+	#[serde(default)]
+	pub extends_array: Vec<String>,
 }
