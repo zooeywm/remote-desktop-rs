@@ -4,7 +4,7 @@ use tracing_appender::rolling::Rotation;
 /// Telemetry system configuration
 #[derive(Debug, Deserialize)]
 pub struct TelemetryConfig {
-	#[serde(default = "CommonLogConfig::default_app_name")]
+	#[serde(default = "TelemetryConfig::default_app_name")]
 	pub app_name: String,
 	/// Whether to turn on
 	#[serde(default = "CommonLogConfig::default_enable")]
@@ -21,6 +21,9 @@ pub struct TelemetryConfig {
 	/// File output configuration
 	#[serde(default)]
 	pub file: FileConfig,
+
+	#[serde(default = "TelemetryConfig::default_timezone")]
+	pub timezone: i8,
 }
 
 /// Console output configuration
@@ -60,10 +63,8 @@ pub struct FileConfig {
 	#[serde(default = "FileConfig::default_filename")]
 	pub prefix: String,
 
-	/// The writing duration of rolling creation files. The default is `Never`,
-	/// which means writing of rolling creation files is prohibited.
-	#[serde(default)]
-	pub rolling_time: LogRotation,
+	#[serde(flatten)]
+	pub r#type: FileLogType,
 }
 
 /// Call tracing configuration
@@ -78,8 +79,21 @@ pub struct RemoteConfig {
 	pub collector_endpoint: String,
 }
 
+#[derive(Debug, Default, Deserialize)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum FileLogType {
+	Rolling {
+		/// The writing duration of rolling creation files. The default is `Never`,
+		/// which means writing of rolling creation files is prohibited.
+		#[serde(default)]
+		rolling_time: LogRotation,
+	},
+	#[default]
+	New,
+}
+
 #[derive(Debug, Default, Clone, Copy, Deserialize)]
-#[serde(from = "String")]
+#[serde(from = "String", rename_all = "snake_case")]
 pub enum LogRotation {
 	Daily,
 	Hourly,
@@ -112,8 +126,6 @@ impl From<LogRotation> for Rotation {
 
 impl CommonLogConfig {
 	fn default_enable() -> bool { true }
-
-	fn default_app_name() -> String { String::from("remote-desk-rs") }
 }
 
 impl FileConfig {
@@ -130,8 +142,15 @@ impl Default for TelemetryConfig {
 			console:  Default::default(),
 			remote:   Default::default(),
 			file:     Default::default(),
+			timezone: Default::default(),
 		}
 	}
+}
+
+impl TelemetryConfig {
+	fn default_app_name() -> String { String::from("remote-desk-rs") }
+
+	fn default_timezone() -> i8 { 0 }
 }
 
 impl Default for CommonLogConfig {
@@ -148,10 +167,10 @@ impl Default for CommonLogConfig {
 impl Default for FileConfig {
 	fn default() -> Self {
 		Self {
-			common:       Default::default(),
-			path:         Self::default_path(),
-			prefix:       Self::default_filename(),
-			rolling_time: Default::default(),
+			common: Default::default(),
+			path:   Self::default_path(),
+			prefix: Self::default_filename(),
+			r#type: Default::default(),
 		}
 	}
 }
