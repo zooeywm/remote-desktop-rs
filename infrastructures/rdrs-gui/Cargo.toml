@@ -1,0 +1,28 @@
+[package]
+name        = "rdrs-gui"
+version     = "0.1.0"
+edition     = "2021"
+license     = "GPL"
+authors     = ["zooeywm <zooeywm@gmail.com>"]
+description = "remote-desk gui"
+repository  = "https://github.com/zooeywm/remote-desktop-rs"
+
+[dependencies]
+rdrs-core = { workspace = true }
+
+dep-inj        = { workspace = true }
+dep-inj-target = { workspace = true }
+serde          = { workspace = true, features = ["derive"] }
+tracing        = { workspace = true }
+tokio          = { workspace = true }
+
+# NOTE:
+# i-slint-backend-winit does not adhere to semver and may introduce breaking changes in any patch release.
+i-slint-backend-winit = { version = "1.7.2", optional = true }
+slint                 = { version = "1.7.2", default-features = false, features = ["backend-winit", "accessibility", "compat-1-2", "renderer-skia", "std"], optional = true }
+
+[build-dependencies]
+slint-build = { version = "1.7", optional = true }
+
+[features]
+slint = ["dep:slint", "dep:i-slint-backend-winit", "slint-build"]

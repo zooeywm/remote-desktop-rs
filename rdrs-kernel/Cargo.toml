@@ -12,6 +12,7 @@ rdrs-core   = { workspace = true }
 rdrs-tools  = { workspace = true }
 rdrs-codec  = { workspace = true }
 rdrs-webrtc = { workspace = true }
+rdrs-gui    = { workspace = true, optional = true }
 
 tokio                 = { workspace = true }
 serde                 = { workspace = true, features = ["derive"] }
@@ -37,4 +38,5 @@ telemetry = [
   "dep:opentelemetry_sdk",
   "dep:tracing-appender",
 ]
+slint = ["dep:rdrs-gui", "rdrs-gui/slint"]
 server_only = []

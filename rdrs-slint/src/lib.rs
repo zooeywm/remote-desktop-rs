@@ -1,16 +1,14 @@
-slint::include_modules!();
-use configuration::SlintConfig;
-use rdrs_kernel::{config::build_config, Container, Result};
+use rdrs_kernel::{config::{build_config, CommonConfig}, Container, Result};
+use serde::Deserialize;
 
-pub mod configuration;
+#[derive(Debug, Deserialize)]
+pub struct SlintConfig {
+	#[serde(default, flatten)]
+	pub common: CommonConfig,
+}
 
-pub fn init() -> Result<(Container, App)> {
+pub fn init() -> Result<Container> {
 	let SlintConfig { common } = build_config()?.try_deserialize()?;
-
 	let container = Container::initialize(common)?;
-
-	slint::platform::set_platform(Box::new(i_slint_backend_winit::Backend::new()?))?;
-
-	let app = App::new()?;
-	Ok((container, app))
+	Ok(container)
 }

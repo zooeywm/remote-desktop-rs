@@ -1,14 +1,14 @@
-use rdrs_core::{error::Result, model::{StreamSource, VideoFrame}, service::Transcoder};
+use rdrs_core::{error::Result, model::StreamSource, service::{Codec, Gui}};
 
 use crate::container::Container;
 
 impl Container {
-	/// Start decoding, call on_video_frame every decoded frame.
-	pub fn start_decode(
-		&mut self,
-		stream_source: StreamSource,
-		on_video_frame: impl Fn(&dyn VideoFrame) -> Result<()> + Send + 'static,
-	) -> Result<()> {
-		self.strat_decode(stream_source, on_video_frame)
+	/// Prepare gui and generate VideoFrameHandler, then start decoding, the
+	/// VideoFrameHandler will handle every decoded frame.
+	pub fn start_decode(&mut self, stream_source: StreamSource) -> Result<()> {
+		let video_frame_handler = self.generate_video_frame_handler();
+		self.strat_decode(stream_source, video_frame_handler)
 	}
+
+	pub fn start_gui(&self) -> Result<()> { self.run() }
 }

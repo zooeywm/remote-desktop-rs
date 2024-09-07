@@ -2,14 +2,18 @@ mod boilerplate;
 
 use rdrs_codec::FFmpegCodecState;
 use rdrs_core::error::Result;
+use rdrs_gui::SlintGuiState;
 
 use crate::{config::CommonConfig, telemetry::init_telemetry};
 
-#[derive(derive_more::AsMut)]
+#[derive(derive_more::AsMut, derive_more::AsRef)]
 pub struct Container {
 	#[as_mut]
-	pub(crate) transcoder_manager: FFmpegCodecState,
-	pub extends:                   Option<config::Value>,
+	pub(crate) codec: FFmpegCodecState,
+	#[as_ref]
+	#[cfg(feature = "slint")]
+	pub(crate) gui:   SlintGuiState,
+	pub extends:      Option<config::Value>,
 }
 
 impl Container {
@@ -19,6 +23,9 @@ impl Container {
 			tracing::error!("panic: {panic_info}");
 		}));
 
-		Ok(Self { transcoder_manager: FFmpegCodecState::new(), extends })
+		#[cfg(feature = "slint")]
+		let gui = SlintGuiState::new()?;
+
+		Ok(Self { codec: FFmpegCodecState::new(), gui, extends })
 	}
 }

@@ -12,7 +12,7 @@ rdrs-core  = { workspace = true }
 rdrs-tools = { workspace = true }
 
 tracing        = { workspace = true }
-tokio          = { workspace = true, features = ["fs", "macros", "rt-multi-thread", "time", "sync"] }
+tokio          = { workspace = true, features = ["macros", "time", "sync"] }
 dep-inj        = { workspace = true }
 dep-inj-target = { workspace = true }
 ffmpeg-next    = "7.0"

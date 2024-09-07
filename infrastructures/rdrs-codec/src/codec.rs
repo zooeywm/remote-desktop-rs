@@ -1,5 +1,5 @@
 use ffmpeg_next::{codec::Context as CodecContext, decoder::Video as VideoDecoder, format::{input, Pixel}, media::Type as MediaType, picture, software::scaling::{Context as ScalingContext, Flags as ScalingFlags}, Error as FFmpegError};
-use rdrs_core::{error::Result, model::{StreamSource, VideoFrame}, service::Transcoder};
+use rdrs_core::{error::Result, model::StreamSource, service::{Codec, VideoFrameHandler}};
 use rdrs_tools::tokio_handle;
 use tokio::task::JoinHandle;
 
@@ -15,14 +15,14 @@ impl FFmpegCodecState {
 	pub fn new() -> Self { Self { decoder_join_handles: vec![] } }
 }
 
-impl<Deps> Transcoder for FFmpegCodec<Deps>
+impl<Deps> Codec for FFmpegCodec<Deps>
 where
 	Deps: AsMut<FFmpegCodecState>,
 {
 	fn strat_decode(
 		&mut self,
 		source: StreamSource,
-		on_video_frame: impl Fn(&dyn VideoFrame) -> Result<()> + Send + 'static,
+		video_frame_handler: Box<dyn VideoFrameHandler>,
 	) -> Result<()> {
 		ffmpeg_next::init()?;
 		tracing::info!("{source:#?}");
@@ -45,7 +45,8 @@ where
 					// Send the packet to video decoder
 					video_decoder.send_packet(&packet)?;
 					for rendered_frame in receive_and_process_decoded(&mut video_decoder)? {
-						on_video_frame(&rendered_frame)?;
+						video_frame_handler.handle_video_frame(&rendered_frame)?;
+						// on_video_frame(&rendered_frame)?;
 					}
 				}
 			}

@@ -8,19 +8,9 @@ description = "remote-desk slint GUI"
 repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
-rdrs-kernel = { workspace = true, features = ["telemetry"] }
+rdrs-kernel = { workspace = true, features = ["telemetry", "slint"] }
+serde       = { workspace = true, features = ["derive"] }
 
-tokio   = { workspace = true }
-serde   = { workspace = true, features = ["derive"] }
-tracing = { workspace = true }
-
-# NOTE:
-# i-slint-backend-winit does not adhere to semver and may introduce breaking changes in any patch release.
-i-slint-backend-winit = "1.7.2"
-slint                 = { version = "1.7.2", default-features = false, features = ["backend-winit", "accessibility", "compat-1-2", "renderer-skia", "std"] }
-
-[build-dependencies]
-slint-build = "1.7"
-
+tokio = { version = "1.40.0", features = ["rt-multi-thread"] }
 [dev-dependencies]
 config = { workspace = true }

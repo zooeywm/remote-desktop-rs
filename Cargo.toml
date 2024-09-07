@@ -30,3 +30,4 @@ rdrs-flutter = { path = "rdrs-flutter" }
 rdrs-slint   = { path = "rdrs-slint" }
 rdrs-codec   = { path = "infrastructures/rdrs-codec" }
 rdrs-webrtc  = { path = "infrastructures/rdrs-webrtc" }
+rdrs-gui     = { path = "infrastructures/rdrs-gui" }

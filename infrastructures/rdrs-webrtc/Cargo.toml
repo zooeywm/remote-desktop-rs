@@ -9,9 +9,6 @@ repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
 rdrs-core   = { workspace = true }
-rdrs-tools  = { workspace = true }
 
-tokio          = { workspace = true }
 dep-inj        = { workspace = true }
 dep-inj-target = { workspace = true }
-webrtc         = "0.11"

@@ -15,4 +15,4 @@ pub trait VideoFrame: Send {
 	fn stride(&self, index: usize) -> usize;
 }
 
-pub type OnVideoFrame = dyn Fn(&dyn VideoFrame) -> Result<()>;
+pub type OnVideoFrame = dyn Fn(&(dyn VideoFrame + '_)) -> Result<()>;
