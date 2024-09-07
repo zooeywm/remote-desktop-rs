@@ -1,8 +1,8 @@
-# rdrs-rs(WIP)
+# remote-desktop-rs(WIP)
 
 ## Introduce
 
-Aiming to develop a remote desk control application supports for Windows/Linux(X11/Wayland)/macOS/Android/iOS, as well as a server with no GUI(or a TUI)
+Aiming to develop a remote desktop control application supports for Windows/Linux(X11/Wayland)/macOS/Android/iOS, as well as a server with no GUI(or a TUI)
 
 ## Note
 

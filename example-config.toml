@@ -1,0 +1,30 @@
+[extends]
+video_path = "/path/to/video.mp4"
+
+[telemetry]
+timezone = 8
+app_name = "rdrs"
+enable   = true
+
+[telemetry.console]
+enable  = true
+verbose = true
+filter  = "debug"
+# filter_env = "RDRS_LOG"
+
+[telemetry.remote]
+enable = false
+
+[telemetry.file]
+## Type can be new or rolling
+type = "rolling"
+## When type is rolling, the rolling_time will take effect, the value can be "daily", "hourly" or "minutely"
+# rolling_time = "daily"
+## log file(s) path 
+path    = "path/to/logs"
+## log file name prefix, when type is new, the log file name will be like this: {prefix}_20240906_232212.log
+prefix  = "rdrs"
+enable  = true
+verbose = true
+filter  = "debug"
+# filter_env = "RDRS_LOG_FILE"
