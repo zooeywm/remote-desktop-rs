@@ -1,7 +1,7 @@
 use std::sync::atomic::{AtomicU8, Ordering};
 
 use dashmap::DashMap;
-use rdrs_core::{error::Result, model::StreamType, service::{Codec, VideoFrameHandler}};
+use rdrs_core::{error::Result, model::StreamType, service::{Codec, VideoFrameHandlerGenerator}};
 use tracing::error;
 
 use crate::codec::FFmpegCodec;
@@ -22,14 +22,11 @@ impl FFmpegCodecManagerState {
 
 impl<Deps> Codec for FFmpegCodecManager<Deps>
 where
-	Deps: AsRef<FFmpegCodecManagerState>,
+	Deps: AsRef<FFmpegCodecManagerState> + VideoFrameHandlerGenerator,
 {
-	fn start_decode(
-		&self,
-		source: StreamType,
-		video_frame_handler: Box<dyn VideoFrameHandler>,
-	) -> Result<()> {
+	fn start_decode(&self, source: StreamType) -> Result<()> {
 		let id = self.current_source_id.fetch_add(1, Ordering::Relaxed);
+		let video_frame_handler = self.prj_ref().generate_video_frame_handler();
 		let codec = FFmpegCodec::start(source, video_frame_handler)?;
 		self.codecs.insert(id, codec);
 		Ok(())

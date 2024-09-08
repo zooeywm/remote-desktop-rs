@@ -4,4 +4,4 @@ mod video_frame_handler;
 
 pub use codec::Codec;
 pub use gui::Gui;
-pub use video_frame_handler::VideoFrameHandler;
+pub use video_frame_handler::{VideoFrameHandler, VideoFrameHandlerGenerator};

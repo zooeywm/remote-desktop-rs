@@ -1,7 +1,7 @@
 slint::include_modules!();
 
 use i_slint_backend_winit::{winit::event::WindowEvent, WinitWindowAccessor, WinitWindowEventResult};
-use rdrs_core::{error::Result, model::VideoFrame, service::{Gui, VideoFrameHandler}};
+use rdrs_core::{error::Result, model::VideoFrame, service::{Gui, VideoFrameHandler, VideoFrameHandlerGenerator}};
 use slint::{Weak, Window};
 use tokio::time::Instant;
 use tracing::{debug, trace};
@@ -12,7 +12,7 @@ pub struct SlintGuiState {
 	app: App,
 }
 
-struct SlintGuiWeak {
+pub struct SlintGuiWeak {
 	app_weak: Weak<App>,
 }
 
@@ -34,11 +34,16 @@ impl<Deps> Gui for SlintGui<Deps>
 where
 	Deps: AsRef<SlintGuiState>,
 {
+	fn run(&self) -> Result<()> { Ok(self.app.run()?) }
+}
+
+impl<Deps> VideoFrameHandlerGenerator for SlintGui<Deps>
+where
+	Deps: AsRef<SlintGuiState>,
+{
 	fn generate_video_frame_handler(&self) -> Box<dyn VideoFrameHandler> {
 		Box::new(SlintGuiWeak::new(self.app.as_weak()))
 	}
-
-	fn run(&self) -> Result<()> { Ok(self.app.run()?) }
 }
 
 impl VideoFrameHandler for SlintGuiWeak {

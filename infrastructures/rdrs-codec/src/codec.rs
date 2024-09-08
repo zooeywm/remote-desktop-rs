@@ -11,6 +11,7 @@ pub(crate) struct FFmpegCodec {
 	stop_flag: Arc<AtomicBool>,
 }
 
+/// TODO: split Video and Audio decode to different structs
 impl FFmpegCodec {
 	pub fn start(
 		source: StreamType,
