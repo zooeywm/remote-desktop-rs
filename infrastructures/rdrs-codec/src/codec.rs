@@ -1,9 +1,9 @@
-use ffmpeg_next::{codec::Context as CodecContext, decoder::Video as VideoDecoder, format::{input, Pixel}, media::Type as MediaType, picture, software::scaling::{Context as ScalingContext, Flags as ScalingFlags}, Error as FFmpegError};
+use ffmpeg_next::{codec::Context as CodecContext, decoder::Video as VideoDecoder, format::{input, Pixel}, media::Type as MediaType, software::scaling::{Context as ScalingContext, Flags as ScalingFlags}, Error as FFmpegError};
 use rdrs_core::{error::Result, model::StreamSource, service::{Codec, VideoFrameHandler}};
 use rdrs_tools::tokio_handle;
 use tokio::task::JoinHandle;
 
-use crate::video_frame::FFmpegVideoFrame;
+use crate::{stream_clock::StreamClock, video_frame::FFmpegVideoFrame};
 
 #[derive(dep_inj::DepInj, Default)]
 #[target(FFmpegCodec)]
@@ -25,7 +25,7 @@ where
 		video_frame_handler: Box<dyn VideoFrameHandler>,
 	) -> Result<()> {
 		ffmpeg_next::init()?;
-		tracing::info!("{source:#?}");
+		tracing::info!("Start decoding with source: {source:?}");
 		let mut input_context = match source {
 			StreamSource::File { path } => input(&path)?,
 			_ => todo!(),
@@ -34,20 +34,41 @@ where
 		let video_stream =
 			input_context.streams().best(MediaType::Video).ok_or(FFmpegError::StreamNotFound)?;
 		let video_stream_index = video_stream.index();
-		// let video_stream_time_base = video_stream.time_base();
 
 		let mut video_decoder =
 			CodecContext::from_parameters(video_stream.parameters())?.decoder().video()?;
 
+		let clock = StreamClock::new(&video_stream);
+
+		let (format, width, height) =
+			(video_decoder.format(), video_decoder.width(), video_decoder.height());
+
+		let mut video_frame = ffmpeg_next::frame::Video::new(format, width, height);
+		let mut rendered_frame = ffmpeg_next::frame::Video::new(Pixel::RGB24, width, height);
+
 		let mut process_input_context = move || -> Result<()> {
+			// Render with software scale
+			let mut scaler = ScalingContext::get(
+				format,
+				width,
+				height,
+				Pixel::RGB24,
+				width,
+				height,
+				ScalingFlags::FAST_BILINEAR,
+			)?;
 			for (stream, packet) in input_context.packets() {
 				if stream.index() == video_stream_index {
 					// Send the packet to video decoder
 					video_decoder.send_packet(&packet)?;
-					for rendered_frame in receive_and_process_decoded(&mut video_decoder)? {
-						video_frame_handler.handle_video_frame(&rendered_frame)?;
-						// on_video_frame(&rendered_frame)?;
-					}
+					video_receive_and_process_decode(
+						&mut video_frame,
+						&mut rendered_frame,
+						&mut video_decoder,
+						&clock,
+						video_frame_handler.as_ref(),
+						&mut scaler,
+					)?;
 				}
 			}
 			video_decoder.send_eof()?;
@@ -67,31 +88,22 @@ where
 }
 
 #[inline]
-fn receive_and_process_decoded(decoder: &mut VideoDecoder) -> Result<Vec<FFmpegVideoFrame>> {
-	let (format, width, height) = (decoder.format(), decoder.width(), decoder.height());
-	let mut frame = ffmpeg_next::frame::Video::empty();
-
-	let mut rendered_frames = vec![];
-	while decoder.receive_frame(&mut frame).is_ok() {
-		let timestamp = frame.timestamp();
-		frame.set_pts(timestamp);
-		frame.set_kind(picture::Type::None);
-		// Render with software scale
-		let mut scaler = ScalingContext::get(
-			format,
-			width,
-			height,
-			Pixel::RGB24,
-			width,
-			height,
-			ScalingFlags::FAST_BILINEAR,
-		)?;
-		let mut rgb_frame = ffmpeg_next::frame::Video::empty();
-		scaler.run(&frame, &mut rgb_frame)?;
-		rendered_frames.push(FFmpegVideoFrame(rgb_frame));
+fn video_receive_and_process_decode(
+	video_frame: &mut ffmpeg_next::frame::Video,
+	rendered_frame: &mut ffmpeg_next::frame::Video,
+	decoder: &mut VideoDecoder,
+	clock: &StreamClock,
+	video_frame_handler: &dyn VideoFrameHandler,
+	scaler: &mut ScalingContext,
+) -> Result<()> {
+	while decoder.receive_frame(video_frame).is_ok() {
+		if let Some(delay) = clock.convert_pts_to_instant(video_frame.pts()) {
+			std::thread::sleep(delay);
+		}
+		scaler.run(video_frame, rendered_frame)?;
+		video_frame_handler.handle_video_frame(&FFmpegVideoFrame(rendered_frame))?;
 	}
-
-	Ok(rendered_frames)
+	Ok(())
 }
 
 impl Drop for FFmpegCodecState {

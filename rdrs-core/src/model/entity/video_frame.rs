@@ -1,5 +1,3 @@
-use crate::error::Result;
-
 /// Video Frame, because all of its fields are Send, it is Send
 pub trait VideoFrame: Send {
 	/// Frame width
@@ -14,5 +12,3 @@ pub trait VideoFrame: Send {
 	/// Frame stride of index
 	fn stride(&self, index: usize) -> usize;
 }
-
-pub type OnVideoFrame = dyn Fn(&(dyn VideoFrame + '_)) -> Result<()>;

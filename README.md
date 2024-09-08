@@ -31,7 +31,7 @@ One can configuration this program by a workdir file: `config.toml` or toml file
 - [ ] other device features include virtual camera, virtual microphone, usb redirect, disk share, etc
 - [ ] metircs
 
-here are [examples](rdrs-slint/examples/).
+Here are [examples](rdrs-slint/examples/).
 
 ## architecture
 
@@ -59,14 +59,14 @@ Implementation of technical facilities
 
 App kernel
 
-## rust-desk-cli
+## rdrs-cli
 
 Deploy a machine as remote-desk server without GUI, can be connected by rdrs-flutter and rdrs-slint
 
-## rust-desk-slint
+## rdrs-slint
 
 GUI for Windows/Linux/macOS
 
-## rust-desk-flutter
+## rdrs-flutter
 
 GUI for Android/iOS
