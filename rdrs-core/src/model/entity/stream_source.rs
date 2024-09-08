@@ -2,6 +2,6 @@ use std::path::PathBuf;
 
 #[non_exhaustive]
 #[derive(Debug)]
-pub enum StreamSource {
+pub enum StreamType {
 	File { path: PathBuf },
 }

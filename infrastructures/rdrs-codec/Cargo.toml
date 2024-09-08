@@ -16,3 +16,4 @@ tokio          = { workspace = true, features = ["macros", "time", "sync"] }
 dep-inj        = { workspace = true }
 dep-inj-target = { workspace = true }
 ffmpeg-next    = "7.0"
+dashmap        = { workspace = true }

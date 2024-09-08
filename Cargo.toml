@@ -22,6 +22,7 @@ dep-inj        = "0.1"
 dep-inj-target = "0.1"
 tracing        = "0.1"
 config         = "0.14"
+dashmap        = "6.1"
 
 rdrs-core    = { path = "rdrs-core" }
 rdrs-kernel  = { path = "rdrs-kernel" }

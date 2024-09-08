@@ -1,14 +1,19 @@
 use super::VideoFrameHandler;
-use crate::{error::Result, model::StreamSource};
+use crate::{error::Result, model::StreamType};
 
 /// Use for decode stream
 /// TODO: Split render logic from it
 pub trait Codec {
 	/// Start a new thread, decode frame, render, and display by callback.
-	fn strat_decode(
-		&mut self,
-		source: StreamSource,
+	fn start_decode(
+		&self,
+		source: StreamType,
 		video_frame_handler: Box<dyn VideoFrameHandler>,
-		// on_video_frame: impl Fn(&(dyn VideoFrame + '_)) -> Result<()> + Send + 'static,
 	) -> Result<()>;
+
+	/// Close codec by id
+	fn close_by_id(&self, id: u8) -> Result<()>;
+
+	/// Close all codecs
+	fn close_all(&self) -> Result<()>;
 }

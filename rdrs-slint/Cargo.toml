@@ -9,8 +9,11 @@ repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
 rdrs-kernel = { workspace = true, features = ["telemetry", "slint"] }
-serde       = { workspace = true, features = ["derive"] }
+
+serde   = { workspace = true, features = ["derive"] }
+tracing = { workspace = true }
 
 tokio = { version = "1.40.0", features = ["rt-multi-thread"] }
+
 [dev-dependencies]
 config = { workspace = true }
