@@ -1,7 +1,7 @@
 use std::sync::atomic::{AtomicU8, Ordering};
 
 use dashmap::DashMap;
-use rdrs_core::{error::Result, model::StreamType, service::{Codec, VideoFrameHandlerGenerator}};
+use rdrs_core::{error::Result, model::{vo::VideoStreamInfo, StreamType}, service::{Codec, VideoFrameHandlerGenerator}};
 use tracing::error;
 
 use crate::codec::FFmpegCodec;
@@ -46,5 +46,17 @@ where
 		self.codecs.clear();
 		tracing::info!("Stopped all codecs.");
 		Ok(())
+	}
+
+	/// FIXME: to write a new Error type, use the new Error type to handle None
+	/// Option.
+	fn update_video_stream_by_id(&self, id: u8, new_info: VideoStreamInfo) -> Result<bool> {
+		match self.codecs.get(&id) {
+			Some(codec) => {
+				return Ok(codec.change_video_info(new_info));
+			}
+			None => error!("No such codec with id: {id}."),
+		}
+		Ok(false)
 	}
 }

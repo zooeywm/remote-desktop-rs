@@ -1,5 +1,5 @@
 use rdrs_codec::FFmpegCodecManager;
-use rdrs_core::{error::Result, model::StreamType, service::{Codec, Gui, VideoFrameHandler, VideoFrameHandlerGenerator}};
+use rdrs_core::{error::Result, model::{vo::VideoStreamInfo, StreamType}, service::{Codec, Gui, VideoFrameHandler, VideoFrameHandlerGenerator}};
 use rdrs_gui::SlintGui;
 
 use crate::container::Container;
@@ -12,6 +12,10 @@ impl Codec for Container {
 	fn close_by_id(&self, id: u8) -> Result<()> { FFmpegCodecManager::inj_ref(self).close_by_id(id) }
 
 	fn close_all(&self) -> Result<()> { FFmpegCodecManager::inj_ref(self).close_all() }
+
+	fn update_video_stream_by_id(&self, id: u8, new_info: VideoStreamInfo) -> Result<bool> {
+		FFmpegCodecManager::inj_ref(self).update_video_stream_by_id(id, new_info)
+	}
 }
 
 #[cfg(feature = "slint")]

@@ -1,4 +1,4 @@
-use crate::{error::Result, model::StreamType};
+use crate::{error::Result, model::{vo::VideoStreamInfo, StreamType}};
 
 /// Use for decode stream
 /// TODO: Split render logic from it
@@ -11,4 +11,7 @@ pub trait Codec {
 
 	/// Close all codecs
 	fn close_all(&self) -> Result<()>;
+
+	/// Update Video steam by id, if nothing to change, return Ok(false)
+	fn update_video_stream_by_id(&self, id: u8, new_info: VideoStreamInfo) -> Result<bool>;
 }
