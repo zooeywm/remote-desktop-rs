@@ -1,4 +1,4 @@
-use rdrs_core::{error::Result, model::StreamType, service::{Codec, Gui}};
+use rdrs_core::{error::Result, model::StreamType, service::{CodecManager, Gui}};
 
 use crate::container::Container;
 

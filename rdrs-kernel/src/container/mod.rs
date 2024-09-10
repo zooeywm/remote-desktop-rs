@@ -1,7 +1,7 @@
 mod boilerplate;
 
-use rdrs_codec::FFmpegCodecManagerState;
-use rdrs_core::error::Result;
+use rdrs_codec::FFmpegCodec;
+use rdrs_core::{error::Result, service_impl::CodecManagerState};
 use rdrs_gui::SlintGuiState;
 
 use crate::{config::CommonConfig, telemetry::init_telemetry};
@@ -9,7 +9,7 @@ use crate::{config::CommonConfig, telemetry::init_telemetry};
 #[derive(derive_more::AsRef)]
 pub struct Container {
 	#[as_ref]
-	pub(crate) codec: FFmpegCodecManagerState,
+	pub(crate) codec: CodecManagerState<FFmpegCodec>,
 	#[as_ref]
 	#[cfg(feature = "slint")]
 	pub(crate) gui:   SlintGuiState,
@@ -26,6 +26,6 @@ impl Container {
 		#[cfg(feature = "slint")]
 		let gui = SlintGuiState::new()?;
 
-		Ok(Self { codec: FFmpegCodecManagerState::new()?, gui, extends })
+		Ok(Self { codec: CodecManagerState::<FFmpegCodec>::new()?, gui, extends })
 	}
 }

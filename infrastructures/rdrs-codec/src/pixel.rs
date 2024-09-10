@@ -1,7 +1,7 @@
 use std::ops::Deref;
 
 use ffmpeg_next::format::Pixel as FFmpegPixel;
-use rdrs_core::model::vo::Pixel as CorePixel;
+use rdrs_core::model::Pixel as CorePixel;
 
 pub struct PixelWrapper(pub FFmpegPixel);
 

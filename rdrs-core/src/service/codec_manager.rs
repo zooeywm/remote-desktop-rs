@@ -1,8 +1,8 @@
-use crate::{error::Result, model::{vo::VideoStreamInfo, StreamType}};
+use crate::{error::Result, model::{StreamType, VideoStreamInfo}};
 
 /// Use for decode stream
 /// TODO: Split render logic from it
-pub trait Codec {
+pub trait CodecManager {
 	/// Start a new thread, decode frame, render, and display by callback.
 	fn start_decode(&self, source: StreamType) -> Result<()>;
 

@@ -1,20 +1,24 @@
-use rdrs_codec::FFmpegCodecManager;
-use rdrs_core::{error::Result, model::{vo::VideoStreamInfo, StreamType}, service::{Codec, Gui, VideoFrameHandler, VideoFrameHandlerGenerator}};
+use rdrs_codec::FFmpegCodec;
+use rdrs_core::{error::Result, model::{StreamType, VideoStreamInfo}, service::{CodecManager, Gui, VideoFrameHandler, VideoFrameHandlerGenerator}, service_impl::CodecManagerImpl};
 use rdrs_gui::SlintGui;
 
 use crate::container::Container;
 
-impl Codec for Container {
+impl CodecManager for Container {
 	fn start_decode(&self, source: StreamType) -> Result<()> {
-		FFmpegCodecManager::inj_ref(self).start_decode(source)
+		CodecManagerImpl::<FFmpegCodec, _>::inj_ref(self).start_decode(source)
 	}
 
-	fn close_by_id(&self, id: u8) -> Result<()> { FFmpegCodecManager::inj_ref(self).close_by_id(id) }
+	fn close_by_id(&self, id: u8) -> Result<()> {
+		CodecManagerImpl::<FFmpegCodec, _>::inj_ref(self).close_by_id(id)
+	}
 
-	fn close_all(&self) -> Result<()> { FFmpegCodecManager::inj_ref(self).close_all() }
+	fn close_all(&self) -> Result<()> {
+		CodecManagerImpl::<FFmpegCodec, _>::inj_ref(self).close_all()
+	}
 
 	fn update_video_stream_by_id(&self, id: u8, new_info: VideoStreamInfo) -> Result<bool> {
-		FFmpegCodecManager::inj_ref(self).update_video_stream_by_id(id, new_info)
+		CodecManagerImpl::<FFmpegCodec, _>::inj_ref(self).update_video_stream_by_id(id, new_info)
 	}
 }
 

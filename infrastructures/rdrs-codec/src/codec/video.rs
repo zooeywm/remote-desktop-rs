@@ -1,7 +1,7 @@
 use std::sync::{atomic::{AtomicBool, Ordering}, Arc};
 
 use ffmpeg_next::{codec, decoder, format::{self, Pixel}, frame, software::scaling};
-use rdrs_core::{error::Result, model::vo::VideoStreamInfo, service::VideoFrameHandler};
+use rdrs_core::{error::Result, model::VideoStreamInfo, service::VideoFrameHandler};
 use rdrs_tools::tokio_handle;
 use tracing::{error, info};
 

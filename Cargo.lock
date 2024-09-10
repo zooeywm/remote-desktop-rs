@@ -3689,6 +3689,11 @@ dependencies = [
 [[package]]
 name = "rdrs-core"
 version = "0.1.0"
+dependencies = [
+ "dashmap",
+ "dep-inj",
+ "tracing",
+]
 
 [[package]]
 name = "rdrs-flutter"

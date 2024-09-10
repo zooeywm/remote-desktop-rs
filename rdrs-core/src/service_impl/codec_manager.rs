@@ -1,33 +1,34 @@
 use std::sync::atomic::{AtomicU8, Ordering};
 
 use dashmap::DashMap;
-use rdrs_core::{error::Result, model::{vo::VideoStreamInfo, StreamType}, service::{Codec, VideoFrameHandlerGenerator}};
-use tracing::error;
+use dep_inj::DepInj;
+use tracing::{error, info};
 
-use crate::codec::FFmpegCodec;
+use crate::{error::Result, infra_trait::Codec, model::VideoStreamInfo, service::{CodecManager, VideoFrameHandlerGenerator}};
 
-#[derive(dep_inj::DepInj, Default)]
-#[target(FFmpegCodecManager)]
-pub struct FFmpegCodecManagerState {
+#[derive(DepInj, Default)]
+#[target(CodecManagerImpl)]
+pub struct CodecManagerState<C> {
 	current_source_id: AtomicU8,
-	codecs:            DashMap<u8, FFmpegCodec>,
+	codecs:            DashMap<u8, C>,
 }
 
-impl FFmpegCodecManagerState {
+impl<C: Codec<C = C>> CodecManagerState<C> {
 	pub fn new() -> Result<Self> {
-		ffmpeg_next::init()?;
-		Ok(Self::default())
+		C::init()?;
+		Ok(Self { current_source_id: AtomicU8::new(0), codecs: DashMap::new() })
 	}
 }
 
-impl<Deps> Codec for FFmpegCodecManager<Deps>
+impl<C, Deps> CodecManager for CodecManagerImpl<C, Deps>
 where
-	Deps: AsRef<FFmpegCodecManagerState> + VideoFrameHandlerGenerator,
+	C: Codec<C = C>,
+	Deps: AsRef<CodecManagerState<C>> + VideoFrameHandlerGenerator,
 {
-	fn start_decode(&self, source: StreamType) -> Result<()> {
+	fn start_decode(&self, source: crate::model::StreamType) -> Result<()> {
 		let id = self.current_source_id.fetch_add(1, Ordering::Relaxed);
 		let video_frame_handler = self.prj_ref().generate_video_frame_handler();
-		let codec = FFmpegCodec::start(source, video_frame_handler)?;
+		let codec = C::start(source, video_frame_handler)?;
 		self.codecs.insert(id, codec);
 		Ok(())
 	}
@@ -35,7 +36,7 @@ where
 	fn close_by_id(&self, id: u8) -> Result<()> {
 		match self.codecs.remove(&id) {
 			Some(_) => {
-				tracing::info!("Stopped codec: {id}.");
+				info!("Stopped codec: {id}.");
 			}
 			None => error!("No such codec with id: {id}."),
 		}
@@ -44,12 +45,10 @@ where
 
 	fn close_all(&self) -> Result<()> {
 		self.codecs.clear();
-		tracing::info!("Stopped all codecs.");
+		info!("Stopped all codecs.");
 		Ok(())
 	}
 
-	/// FIXME: to write a new Error type, use the new Error type to handle None
-	/// Option.
 	fn update_video_stream_by_id(&self, id: u8, new_info: VideoStreamInfo) -> Result<bool> {
 		match self.codecs.get(&id) {
 			Some(codec) => {

@@ -8,3 +8,6 @@ description = "remote-desk domain core"
 repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
+dep-inj = { workspace = true }
+dashmap = { workspace = true }
+tracing = { workspace = true }
