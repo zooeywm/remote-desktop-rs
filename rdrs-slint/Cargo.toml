@@ -8,12 +8,13 @@ description = "remote-desk slint GUI"
 repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
-rdrs-kernel = { workspace = true, features = ["telemetry", "slint"] }
+rdrs-tools         = { workspace = true }
+rdrs-kernel        = { workspace = true, features = ["telemetry", "slint"] }
+rdrs-domain-player = { workspace = true }
 
 serde   = { workspace = true, features = ["derive"] }
 tracing = { workspace = true }
-
-tokio = { version = "1.40.0", features = ["rt-multi-thread"] }
+tokio   = { workspace = true, features = ["rt-multi-thread"] }
 
 [dev-dependencies]
 config = { workspace = true }

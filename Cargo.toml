@@ -1,6 +1,6 @@
 [workspace]
 resolver        = "2"
-members         = ["rdrs-*", "infrastructures/*"]
+members         = ["rdrs-*", "infrastructures/*", "domains/*"]
 default-members = ["rdrs-slint", "rdrs-flutter"]
 
 [profile.dev]
@@ -17,18 +17,19 @@ lto      = "fat"
 [workspace.dependencies]
 serde          = "1.0"
 serde_json     = "1.0"
-tokio          = "1.39"
+tokio          = "1.38"
 dep-inj        = "0.1"
 dep-inj-target = "0.1"
 tracing        = "0.1"
 config         = "0.14"
-dashmap        = "6.1"
+thiserror      = "1.0"
 
-rdrs-core    = { path = "rdrs-core" }
-rdrs-kernel  = { path = "rdrs-kernel" }
-rdrs-tools   = { path = "rdrs-tools" }
-rdrs-flutter = { path = "rdrs-flutter" }
-rdrs-slint   = { path = "rdrs-slint" }
-rdrs-codec   = { path = "infrastructures/rdrs-codec" }
-rdrs-webrtc  = { path = "infrastructures/rdrs-webrtc" }
-rdrs-gui     = { path = "infrastructures/rdrs-gui" }
+rdrs-kernel        = { path = "rdrs-kernel" }
+rdrs-tools         = { path = "rdrs-tools" }
+rdrs-flutter       = { path = "rdrs-flutter" }
+rdrs-slint         = { path = "rdrs-slint" }
+rdrs-webrtc        = { path = "infrastructures/rdrs-webrtc" }
+rdrs-codec         = { path = "infrastructures/rdrs-codec" }
+rdrs-gui           = { path = "infrastructures/rdrs-gui" }
+rdrs-repository    = { path = "infrastructures/rdrs-repository" }
+rdrs-domain-player = { path = "domains/rdrs-player" }

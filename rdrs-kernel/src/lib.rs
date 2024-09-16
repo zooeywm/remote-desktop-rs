@@ -5,4 +5,3 @@ mod controls;
 pub mod telemetry;
 
 pub use container::Container;
-pub use rdrs_core::{error::Result, model};

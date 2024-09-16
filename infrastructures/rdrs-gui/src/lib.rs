@@ -2,4 +2,4 @@
 mod slint;
 
 #[cfg(feature = "slint")]
-pub use slint::{SlintGui, SlintGuiState};
+pub use slint::{SlintGui, SlintGuiState, SlintRenderer};

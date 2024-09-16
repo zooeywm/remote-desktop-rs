@@ -8,11 +8,12 @@ description = "remote-desk kernel"
 repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
-rdrs-core   = { workspace = true }
-rdrs-tools  = { workspace = true }
-rdrs-codec  = { workspace = true }
-rdrs-webrtc = { workspace = true }
-rdrs-gui    = { workspace = true, optional = true }
+rdrs-tools         = { workspace = true }
+rdrs-codec         = { workspace = true }
+rdrs-webrtc        = { workspace = true }
+rdrs-repository    = { workspace = true }
+rdrs-gui           = { workspace = true, optional = true }
+rdrs-domain-player = { workspace = true }
 
 tokio                 = { workspace = true }
 serde                 = { workspace = true, features = ["derive"] }
@@ -20,11 +21,11 @@ config                = { workspace = true }
 derive_more           = { version = "1.0", features = ["as_ref"] }
 tracing               = { workspace = true }
 tracing-appender      = { version = "0.2", optional = true }
-tracing-opentelemetry = { version = "0.25", optional = true }
+tracing-opentelemetry = { version = "0.26", optional = true }
 tracing-subscriber    = { version = "0.3", features = ["env-filter", "time", "local-time"], optional = true }
-opentelemetry         = { version = "0.24", optional = true }
-opentelemetry-otlp    = { version = "0.17", optional = true }
-opentelemetry_sdk     = { version = "0.24", features = ["rt-tokio"], optional = true }
+opentelemetry         = { version = "0.25", optional = true }
+opentelemetry-otlp    = { version = "0.25", optional = true }
+opentelemetry_sdk     = { version = "0.25", features = ["rt-tokio"], optional = true }
 chrono                = "0.4"
 time                  = "0.3"
 

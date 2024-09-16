@@ -1,0 +1,10 @@
+[package]
+name    = "rdrs-domain-player"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rdrs-tools = { workspace = true }
+
+dep-inj   = { workspace = true }
+thiserror = { workspace = true }

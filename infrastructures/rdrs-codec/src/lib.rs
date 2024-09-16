@@ -1,7 +1,6 @@
-mod codec;
-mod pixel;
-mod stream_clock;
-mod video_frame;
+mod decoder;
+mod decoder_generator;
+mod pixel_transform;
 
-pub use codec::FFmpegCodec;
-pub use ffmpeg_next::format::Pixel;
+pub use decoder::FFmpegDecoder;
+pub use decoder_generator::FFmpegDecoderGenerator;

@@ -8,4 +8,4 @@ description = "remote-desk platform tools and utilities"
 repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
-tokio  = { workspace = true }
+tokio = { workspace = true, features = ["rt"] }

@@ -1,7 +1,7 @@
 use std::path::Path;
 
 use config::{Config, FileFormat};
-use rdrs_core::error::Result;
+use rdrs_tools::error::Result;
 use serde::Deserialize;
 
 pub fn build_config() -> Result<Config> {

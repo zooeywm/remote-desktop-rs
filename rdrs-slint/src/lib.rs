@@ -1,4 +1,5 @@
-use rdrs_kernel::{config::{build_config, CommonConfig}, Container, Result};
+use rdrs_kernel::{config::{build_config, CommonConfig}, Container};
+use rdrs_tools::error::Result;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]

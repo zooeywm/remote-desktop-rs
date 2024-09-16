@@ -8,7 +8,8 @@ description = "remote-desk gui"
 repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
-rdrs-core = { workspace = true }
+rdrs-tools         = { workspace = true }
+rdrs-domain-player = { workspace = true }
 
 dep-inj        = { workspace = true }
 dep-inj-target = { workspace = true }

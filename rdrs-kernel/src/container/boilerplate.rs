@@ -1,35 +1,68 @@
-use rdrs_codec::FFmpegCodec;
-use rdrs_core::{error::Result, model::{StreamType, VideoStreamInfo}, service::{CodecManager, Gui, VideoFrameHandler, VideoFrameHandlerGenerator}, service_impl::CodecManagerImpl};
-use rdrs_gui::SlintGui;
+use rdrs_codec::{FFmpegDecoder, FFmpegDecoderGenerator};
+use rdrs_domain_player::{repository::PlayerRepository, service::{DecoderGenerator, PlayerManager, RendererGenerator}, service_impl::PlayerManagerImpl, vo::{StreamSource, VideoInfo}, Player};
+use rdrs_gui::{SlintGui, SlintRenderer};
+use rdrs_repository::PlayerMemoryRepository;
+use rdrs_tools::error::Result;
 
 use crate::container::Container;
 
-impl CodecManager for Container {
-	fn start_decode(&self, source: StreamType) -> Result<()> {
-		CodecManagerImpl::<FFmpegCodec, _>::inj_ref(self).start_decode(source)
-	}
+impl DecoderGenerator for Container {
+	type Target = FFmpegDecoder;
 
-	fn close_by_id(&self, id: u8) -> Result<()> {
-		CodecManagerImpl::<FFmpegCodec, _>::inj_ref(self).close_by_id(id)
-	}
+	fn init_decoder(&self) -> Result<()> { FFmpegDecoderGenerator::inj_ref(self).init_decoder() }
 
-	fn close_all(&self) -> Result<()> {
-		CodecManagerImpl::<FFmpegCodec, _>::inj_ref(self).close_all()
-	}
-
-	fn update_video_stream_by_id(&self, id: u8, new_info: VideoStreamInfo) -> Result<bool> {
-		CodecManagerImpl::<FFmpegCodec, _>::inj_ref(self).update_video_stream_by_id(id, new_info)
+	fn generate_decoder(
+		&self,
+		stream_source: StreamSource,
+		render_video_info: VideoInfo,
+	) -> Result<Self::Target> {
+		FFmpegDecoderGenerator::inj_ref(self).generate_decoder(stream_source, render_video_info)
 	}
 }
 
 #[cfg(feature = "slint")]
-impl Gui for Container {
-	fn run(&self) -> Result<()> { SlintGui::inj_ref(self).run() }
+impl RendererGenerator for Container {
+	type Target = SlintRenderer;
+
+	fn generate_renderer(&self, renderer_info: VideoInfo) -> Result<Self::Target> {
+		SlintGui::inj_ref(self).generate_renderer(renderer_info)
+	}
 }
 
-#[cfg(feature = "slint")]
-impl VideoFrameHandlerGenerator for Container {
-	fn generate_video_frame_handler(&self) -> Box<dyn VideoFrameHandler> {
-		SlintGui::inj_ref(self).generate_video_frame_handler()
+impl PlayerRepository for Container {
+	fn create(&mut self, player: Player) -> Result<u8> {
+		PlayerMemoryRepository::inj_ref_mut(self).create(player)
+	}
+
+	fn get_all(&self) -> Vec<&Player> { PlayerMemoryRepository::inj_ref(self).get_all() }
+
+	fn get_mut_by_id(&mut self, id: u8) -> Result<&mut Player> {
+		PlayerMemoryRepository::inj_ref_mut(self).get_mut_by_id(id)
+	}
+
+	fn get_by_id(&self, id: u8) -> Result<&Player> {
+		PlayerMemoryRepository::inj_ref(self).get_by_id(id)
+	}
+}
+
+impl PlayerManager for Container {
+	fn init_decoder(&self) -> Result<()> { PlayerManagerImpl::inj_ref(self).init_decoder() }
+
+	fn create_player(
+		&mut self,
+		stream_source: StreamSource,
+		render_video_info: VideoInfo,
+	) -> Result<u8> {
+		PlayerManagerImpl::inj_ref_mut(self).create_player(stream_source, render_video_info)
+	}
+
+	fn start(&self, id: u8) -> Result<()> { PlayerManagerImpl::inj_ref(self).start(id) }
+
+	fn change_decode_video_info(&self, id: u8, new_info: VideoInfo) -> Result<()> {
+		PlayerManagerImpl::inj_ref(self).change_decode_video_info(id, new_info)
+	}
+
+	fn change_render_video_info(&self, id: u8, new_info: VideoInfo) -> Result<()> {
+		PlayerManagerImpl::inj_ref(self).change_render_video_info(id, new_info)
 	}
 }

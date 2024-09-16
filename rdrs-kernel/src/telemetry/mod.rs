@@ -4,7 +4,7 @@ use std::{path::Path, sync::OnceLock};
 
 use opentelemetry::trace::{TraceResult, TracerProvider};
 use opentelemetry_otlp::WithExportConfig;
-use rdrs_core::error::Result;
+use rdrs_tools::error::Result;
 use time::{format_description::well_known::Rfc3339, UtcOffset};
 use tracing_appender::rolling::RollingFileAppender;
 use tracing_subscriber::{filter::{EnvFilter, LevelFilter}, fmt::{time::OffsetTime, writer::BoxMakeWriter}, layer::SubscriberExt, reload::{self, Handle}, util::SubscriberInitExt, Layer as _, Registry};

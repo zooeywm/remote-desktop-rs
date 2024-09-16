@@ -8,12 +8,12 @@ description = "remote-desk codec"
 repository  = "https://github.com/zooeywm/remote-desktop-rs"
 
 [dependencies]
-rdrs-core  = { workspace = true }
-rdrs-tools = { workspace = true }
+rdrs-domain-player = { workspace = true }
+rdrs-gui           = { workspace = true }
+rdrs-tools         = { workspace = true }
 
 tracing        = { workspace = true }
 tokio          = { workspace = true, features = ["macros", "time", "sync"] }
 dep-inj        = { workspace = true }
 dep-inj-target = { workspace = true }
 ffmpeg-next    = "7.0"
-dashmap        = { workspace = true }

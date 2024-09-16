@@ -1,13 +1,32 @@
-pub(crate) struct StreamClock {
+use std::path::PathBuf;
+
+/// Stream source.
+#[derive(Debug, Clone)]
+pub enum StreamSource {
+	/// Stream source is a file.
+	File {
+		/// File path
+		path: PathBuf,
+	},
+}
+
+pub struct Rational {
+	numerator:   i32,
+	denominator: i32,
+}
+
+impl Rational {
+	pub fn new(numerator: i32, denominator: i32) -> Self { Self { numerator, denominator } }
+}
+
+pub struct StreamClock {
 	time_base_seconds: f64,
 	start_time:        std::time::Instant,
 }
 
 impl StreamClock {
-	pub fn new(stream: &ffmpeg_next::format::stream::Stream) -> Self {
-		let time_base_seconds = stream.time_base();
-		let time_base_seconds =
-			time_base_seconds.numerator() as f64 / time_base_seconds.denominator() as f64;
+	pub fn new(Rational { numerator, denominator }: Rational) -> Self {
+		let time_base_seconds = numerator as f64 / denominator as f64;
 
 		let start_time = std::time::Instant::now();
 
