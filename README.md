@@ -37,13 +37,13 @@ Here are [examples](rdrs-slint/examples/).
 
 Note: Split infrastructures into crates to decrease build time.
 
-![rdrs-architecture](assets/rdrs-architecture.png)
+![rdrs-architecture](assets/rdrs-architecture.jpg)
 
 ## rdrs-config
 
 Configurations of remote-desk
 
-## rdrs-core
+## rdrs-domain
 
 DDD Domains of remote-desk, include models, repositories, and domain services
 
