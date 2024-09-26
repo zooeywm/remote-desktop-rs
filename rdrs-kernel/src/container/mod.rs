@@ -13,13 +13,13 @@ pub struct Container {
 	#[as_ref]
 	#[cfg(feature = "slint")]
 	pub(crate) gui:               SlintGuiState,
-	pub extends:                  Option<config::Value>,
 	#[as_ref]
 	#[as_mut]
 	pub(crate) player_repository: PlayerMemoryRepositoryState,
 	#[as_ref]
 	#[as_mut]
 	pub(crate) player_manager:    PlayerManagerState<FFmpegDecoder, SlintRenderer>,
+	pub extends:                  config::Value,
 }
 
 impl Container {
@@ -35,7 +35,7 @@ impl Container {
 		let player_repository = PlayerMemoryRepositoryState::new();
 		let player_manager = PlayerManagerState::new();
 
-		Ok(Self { gui, extends, player_repository, player_manager })
+		Ok(Self { gui, player_repository, player_manager, extends })
 	}
 
 	pub fn run_gui(&self) -> Result<()> {

@@ -19,6 +19,7 @@ impl Rational {
 	pub fn new(numerator: i32, denominator: i32) -> Self { Self { numerator, denominator } }
 }
 
+#[derive(Debug)]
 pub struct StreamClock {
 	time_base_seconds: f64,
 	start_time:        std::time::Instant,
@@ -40,6 +41,9 @@ impl StreamClock {
 					std::time::Duration::from_secs_f64(pts as f64 * self.time_base_seconds);
 				self.start_time.checked_add(pts_since_start)
 			})
-			.map(|absolute_pts| absolute_pts.duration_since(std::time::Instant::now()))
+			.and_then(|absolute_pts| {
+				let pts = absolute_pts.duration_since(std::time::Instant::now());
+				if pts.is_zero() { None } else { Some(pts) }
+			})
 	}
 }

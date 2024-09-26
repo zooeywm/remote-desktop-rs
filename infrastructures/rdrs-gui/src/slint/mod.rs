@@ -4,8 +4,7 @@ use i_slint_backend_winit::{winit::event::WindowEvent, WinitWindowAccessor, Wini
 use rdrs_domain_player::{service::{Renderer, RendererGenerator}, vo::VideoInfo};
 use rdrs_tools::error::Result;
 use slint::{Weak, Window};
-use tokio::time::Instant;
-use tracing::{debug, trace};
+use tracing::trace;
 
 #[derive(dep_inj::DepInj)]
 #[target(SlintGui)]
@@ -34,13 +33,10 @@ pub struct SlintRenderer {
 
 impl Renderer for SlintRenderer {
 	fn render(&self, decode_buffer: &[u8]) -> Result<()> {
-		let instant = Instant::now();
 		let pixel_buffer = self.video_frame_to_pixel_buffer(decode_buffer);
 		self.app_weak.upgrade_in_event_loop(move |app| {
 			app.set_video_frame(slint::Image::from_rgb8(pixel_buffer));
 		})?;
-		let elapsed = instant.elapsed();
-		debug!("frame: {}ms({}ns)", elapsed.as_millis(), elapsed.as_nanos());
 		Ok(())
 	}
 }

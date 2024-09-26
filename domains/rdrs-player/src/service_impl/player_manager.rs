@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use rdrs_tools::error::Result;
 
-use crate::{repository::PlayerRepository, service::{Decoder, DecoderGenerator, PlayerManager, Renderer, RendererGenerator}, vo::{StreamSource, VideoInfo}, Player};
+use crate::{entity::Player, repository::PlayerRepository, service::{Decoder, DecoderGenerator, PlayerManager, Renderer, RendererGenerator}, vo::{StreamSource, VideoInfo}};
 
 #[derive(dep_inj::DepInj)]
 #[target(PlayerManagerImpl)]

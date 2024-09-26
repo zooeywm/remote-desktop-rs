@@ -8,8 +8,7 @@ use rdrs_tools::error::Result;
 async fn main() -> Result<()> {
 	let mut container = init()?;
 
-	let video_path =
-		container.extends.clone().unwrap().into_table()?.get("video_path").unwrap().to_string();
+	let video_path = container.extends.clone().into_table()?.get("video_path").unwrap().to_string();
 
 	container.start_decoding_streaming(
 		StreamSource::File { path: PathBuf::from(video_path) },

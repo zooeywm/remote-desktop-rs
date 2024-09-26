@@ -1,4 +1,4 @@
-use rdrs_domain_player::{repository::PlayerRepository, service::PlayerManager, vo::{StreamSource, VideoInfo}, Player};
+use rdrs_domain_player::{entity::Player, repository::PlayerRepository, service::PlayerManager, vo::{StreamSource, VideoInfo}};
 use rdrs_tools::error::Result;
 
 use crate::container::Container;

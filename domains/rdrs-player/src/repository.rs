@@ -1,6 +1,6 @@
 use rdrs_tools::error::Result;
 
-use crate::Player;
+use crate::entity::Player;
 
 pub trait PlayerRepository {
 	fn create(&mut self, player: Player) -> Result<u8>;

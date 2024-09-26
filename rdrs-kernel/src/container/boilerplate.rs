@@ -1,5 +1,5 @@
 use rdrs_codec::{FFmpegDecoder, FFmpegDecoderGenerator};
-use rdrs_domain_player::{repository::PlayerRepository, service::{DecoderGenerator, PlayerManager, RendererGenerator}, service_impl::PlayerManagerImpl, vo::{StreamSource, VideoInfo}, Player};
+use rdrs_domain_player::{entity::Player, repository::PlayerRepository, service::{DecoderGenerator, PlayerManager, RendererGenerator}, service_impl::PlayerManagerImpl, vo::{StreamSource, VideoInfo}};
 use rdrs_gui::{SlintGui, SlintRenderer};
 use rdrs_repository::PlayerMemoryRepository;
 use rdrs_tools::error::Result;

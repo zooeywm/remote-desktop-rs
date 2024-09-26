@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use rdrs_domain_player::{error::PlayerError, repository::PlayerRepository, Player};
+use rdrs_domain_player::{entity::Player, error::PlayerError, repository::PlayerRepository};
 use rdrs_tools::error::Result;
 
 #[derive(dep_inj::DepInj, Default)]

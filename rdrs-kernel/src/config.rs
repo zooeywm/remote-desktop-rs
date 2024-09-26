@@ -34,7 +34,7 @@ pub struct CommonConfig {
 	pub telemetry:     crate::telemetry::TelemetryConfig,
 	/// Extend fields
 	#[serde(default)]
-	pub extends:       Option<config::Value>,
+	pub extends:       config::Value,
 	/// Extend Sstring array
 	#[serde(default)]
 	pub extends_array: Vec<String>,
