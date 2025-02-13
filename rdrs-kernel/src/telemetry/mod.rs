@@ -2,8 +2,9 @@ pub mod config;
 
 use std::{io::IsTerminal, path::Path, sync::OnceLock};
 
-use opentelemetry::trace::{TraceResult, TracerProvider};
-use opentelemetry_otlp::WithExportConfig;
+use opentelemetry_appender_tracing::layer::OpenTelemetryTracingBridge;
+use opentelemetry_otlp::{LogExporter, WithExportConfig};
+use opentelemetry_sdk::logs::SdkLoggerProvider;
 use rdrs_tools::error::Result;
 use time::UtcOffset;
 use tracing_appender::rolling::RollingFileAppender;
@@ -20,6 +21,7 @@ static CONSOLE_RELOAD_HANDLE: OnceLock<ReloadHandle> = OnceLock::new();
 pub fn init_telemetry(config: &TelemetryConfig) -> Result<()> {
 	let TelemetryConfig { ref app_name, enable, ref console, ref remote, ref file, timezone } =
 		*config;
+	let resource = opentelemetry_sdk::Resource::builder().with_service_name(app_name.clone()).build();
 
 	if !enable {
 		return Ok(());
@@ -94,24 +96,19 @@ pub fn init_telemetry(config: &TelemetryConfig) -> Result<()> {
 		.transpose()?;
 
 	let RemoteConfig { enable, ref collector_endpoint } = *remote;
-	let remote = enable
-		.then(|| {
-			let mut exporter = opentelemetry_otlp::new_exporter().tonic();
-			if !remote.collector_endpoint.is_empty() {
-				exporter = exporter.with_endpoint(collector_endpoint);
-			}
 
-			let tracer = opentelemetry_otlp::new_pipeline()
-				.tracing()
-				.with_exporter(exporter)
-				.install_batch(opentelemetry_sdk::runtime::Tokio)?
-				.tracer(app_name.clone());
+	if enable && !collector_endpoint.is_empty() {
+		let exporter = LogExporter::builder().with_tonic().with_endpoint(collector_endpoint).build()?;
+		let logger_provider =
+			SdkLoggerProvider::builder().with_resource(resource).with_batch_exporter(exporter).build();
+		// Create a new OpenTelemetryTracingBridge using the above LoggerProvider.
+		let otel_layer = OpenTelemetryTracingBridge::new(&logger_provider);
 
-			TraceResult::Ok(tracing_opentelemetry::layer().with_tracer(tracer))
-		})
-		.transpose()?;
+		tracing_subscriber::registry().with(console).with(file).with(otel_layer).try_init()?;
+	} else {
+		tracing_subscriber::registry().with(console).with(file).try_init()?;
+	};
 
-	Registry::default().with(console).with(file).with(remote).try_init()?;
 	Ok(())
 }
 
