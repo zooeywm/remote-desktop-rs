@@ -18,7 +18,7 @@ rdrs-domain-player = { workspace = true }
 tokio                 = { workspace = true }
 serde                 = { workspace = true, features = ["derive"] }
 config                = { workspace = true }
-derive_more           = { version = "1.0", features = ["as_ref"] }
+derive_more           = { version = "2.0", features = ["as_ref"] }
 tracing               = { workspace = true }
 tracing-appender      = { version = "0.2", optional = true }
 tracing-opentelemetry = { version = "0.26", optional = true }

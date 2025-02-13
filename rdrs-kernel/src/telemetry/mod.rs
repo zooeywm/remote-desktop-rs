@@ -1,13 +1,13 @@
 pub mod config;
 
-use std::{path::Path, sync::OnceLock};
+use std::{io::IsTerminal, path::Path, sync::OnceLock};
 
 use opentelemetry::trace::{TraceResult, TracerProvider};
 use opentelemetry_otlp::WithExportConfig;
 use rdrs_tools::error::Result;
-use time::{format_description::well_known::Rfc3339, UtcOffset};
+use time::UtcOffset;
 use tracing_appender::rolling::RollingFileAppender;
-use tracing_subscriber::{filter::{EnvFilter, LevelFilter}, fmt::{time::OffsetTime, writer::BoxMakeWriter}, layer::SubscriberExt, reload::{self, Handle}, util::SubscriberInitExt, Layer as _, Registry};
+use tracing_subscriber::{Layer as _, Registry, filter::{EnvFilter, LevelFilter}, fmt::{time::OffsetTime, writer::BoxMakeWriter}, layer::SubscriberExt, reload::{self, Handle}, util::SubscriberInitExt};
 
 pub use self::config::*;
 
@@ -35,7 +35,10 @@ pub fn init_telemetry(config: &TelemetryConfig) -> Result<()> {
 	};
 
 	let offset = UtcOffset::from_hms(timezone, 0, 0).unwrap();
-	let timer = OffsetTime::new(offset, Rfc3339);
+	let format = time::format_description::parse(
+		"[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]+[offset_hour]",
+	)?;
+	let timer = OffsetTime::new(offset, format);
 
 	// Console config
 	let ConsoleConfig(CommonLogConfig { enable, verbose, ref filter, ref filter_env }) = *console;
@@ -71,13 +74,13 @@ pub fn init_telemetry(config: &TelemetryConfig) -> Result<()> {
 				FileLogType::New => {
 					std::fs::create_dir_all(path)?;
 					let path = Path::new(path)
-						.join(format!("{prefix}_{}.log", chrono::Local::now().format("%Y%m%d_%H%M%S")));
+						.join(format!("{prefix}-{}.log", chrono::Local::now().format("%Y%m%d-%H%M%S")));
 					BoxMakeWriter::new(std::sync::Mutex::new(std::fs::File::create(path)?))
 				}
 			};
 
 			let layer = tracing_subscriber::fmt::layer()
-				.with_ansi(false)
+				.with_ansi(std::io::stderr().is_terminal())
 				.with_writer(file_writer)
 				.with_file(true)
 				.with_line_number(true)

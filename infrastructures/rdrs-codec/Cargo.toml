@@ -16,7 +16,7 @@ tracing        = { workspace = true }
 tokio          = { workspace = true, features = ["macros", "time", "sync"] }
 dep-inj        = { workspace = true }
 dep-inj-target = { workspace = true }
-ffmpeg-next    = "7.0"
+ffmpeg-next    = "7.1"
 cpal           = "0.15"
 ringbuf        = "0.4"
 bytemuck       = "1.18"
