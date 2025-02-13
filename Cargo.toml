@@ -21,8 +21,8 @@ tokio          = "1.38"
 dep-inj        = "0.1"
 dep-inj-target = "0.1"
 tracing        = "0.1"
-config         = "0.14"
-thiserror      = "1.0"
+config         = "0.15"
+thiserror      = "2.0"
 
 rdrs-kernel        = { path = "rdrs-kernel" }
 rdrs-tools         = { path = "rdrs-tools" }
